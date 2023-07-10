@@ -19,6 +19,7 @@ import 'package:kasie_transie_library/widgets/days_drop_down.dart';
 import 'package:kasie_transie_library/widgets/dispatch_via_scan.dart';
 import 'package:kasie_transie_library/widgets/language_and_color_chooser.dart';
 import 'package:kasie_transie_library/bloc/dispatch_helper.dart';
+import 'package:kasie_transie_library/widgets/scan_vehicle_for_counts.dart';
 import 'package:kasie_transie_library/widgets/scan_vehicle_for_media.dart';
 
 import '../auth/phone_auth_signin.dart';
@@ -321,6 +322,8 @@ class DashboardState extends ConsumerState<Dashboard>
 
   void _navigateToCountPassengers() async {
     pp('$mm ... _navigateToCountPassengers ...');
+    navigateWithScale(const ScanVehicleForCounts(), context);
+
   }
 
   Future _navigateToColor() async {
