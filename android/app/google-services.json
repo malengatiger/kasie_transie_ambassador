@@ -1,0 +1,294 @@
+{
+  "project_info": {
+    "project_number": "79998394043",
+    "project_id": "thermal-effort-366015",
+    "storage_bucket": "thermal-effort-366015.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79998394043:android:d8dae71aeb6fcda0d6139e",
+        "android_client_info": {
+          "package_name": "com.boha.geo_monitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79998394043-snbedcmpfomq4gfcqn1alvqfd0lvvq69.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.boha.geo_monitor",
+            "certificate_hash": "a1c6d044035fb9a0deea9c24a7c7f3dd85ed6950"
+          }
+        },
+        {
+          "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79998394043-02elar1ujjscr25i8a271alnlunllpm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boha.kasieTransieMarshal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79998394043:android:0bf7298da2eeac90d6139e",
+        "android_client_info": {
+          "package_name": "com.boha.kasie_transie_ambassador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79998394043-02elar1ujjscr25i8a271alnlunllpm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boha.kasieTransieMarshal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79998394043:android:1ff06891f5d1a6cbd6139e",
+        "android_client_info": {
+          "package_name": "com.boha.kasie_transie_car"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79998394043-02elar1ujjscr25i8a271alnlunllpm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boha.kasieTransieMarshal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79998394043:android:d6f175c1965daeb8d6139e",
+        "android_client_info": {
+          "package_name": "com.boha.kasie_transie_marshal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79998394043-9cv6ffgusjcjdsono8hjp3rcn57dpuv2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.boha.kasie_transie_marshal",
+            "certificate_hash": "a1c6d044035fb9a0deea9c24a7c7f3dd85ed6950"
+          }
+        },
+        {
+          "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79998394043-02elar1ujjscr25i8a271alnlunllpm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boha.kasieTransieMarshal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79998394043:android:80c20ba9fd692ac0d6139e",
+        "android_client_info": {
+          "package_name": "com.boha.kasie_transie_owner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79998394043-lk9tk3pf0lhb7r8jm10luv37qdg2jbfl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.boha.kasie_transie_owner",
+            "certificate_hash": "a1c6d044035fb9a0deea9c24a7c7f3dd85ed6950"
+          }
+        },
+        {
+          "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79998394043-02elar1ujjscr25i8a271alnlunllpm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boha.kasieTransieMarshal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79998394043:android:aba2b9ea14886ab9d6139e",
+        "android_client_info": {
+          "package_name": "com.boha.kasie_transie_route_builder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79998394043-qjbdct8q4s4m36egodnrtntk7a2priu0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.boha.kasie_transie_route_builder",
+            "certificate_hash": "a1c6d044035fb9a0deea9c24a7c7f3dd85ed6950"
+          }
+        },
+        {
+          "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79998394043-02elar1ujjscr25i8a271alnlunllpm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boha.kasieTransieMarshal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79998394043:android:795878d97bf0326ed6139e",
+        "android_client_info": {
+          "package_name": "com.boha.magicgio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79998394043-2s6554pekjk08e759lb4i6bd1aluugif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79998394043-02elar1ujjscr25i8a271alnlunllpm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boha.kasieTransieMarshal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
