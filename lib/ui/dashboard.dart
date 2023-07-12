@@ -23,6 +23,7 @@ import 'package:kasie_transie_library/widgets/scan_vehicle_for_counts.dart';
 import 'package:kasie_transie_library/widgets/scan_vehicle_for_media.dart';
 
 import '../auth/phone_auth_signin.dart';
+import '../main.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -88,6 +89,7 @@ class DashboardState extends ConsumerState<Dashboard>
       totalPassengers += value.passengers!;
     }
   }
+
   void _confirmNavigationToPhotos(lib.VehicleMediaRequest request) {
     pp('$mm confirm dialog for navigation to vehicle media control ');
 
@@ -158,7 +160,8 @@ class DashboardState extends ConsumerState<Dashboard>
           '🥬🥬🥬auth is DEFINITELY authenticated and OK');
       user = await prefs.getUser();
       authed = true;
-      fcmBloc.subscribeToTopics('MarshallApp');
+      fcmBloc.subscribeToTopics('AmbassadorApp');
+      failedChecker.startChecking();
       setState(() {});
       _getData();
     } else {
@@ -218,6 +221,7 @@ class DashboardState extends ConsumerState<Dashboard>
         await _getCars();
         await _getDispatches(false);
         await _getAssociationVehicleMediaRequests(false);
+        await _getPassengerCounts(false);
         _setTexts();
       }
     } catch (e) {
@@ -238,8 +242,12 @@ class DashboardState extends ConsumerState<Dashboard>
       manualDispatch,
       vehiclesText,
       routesText,
-      landmarksText, days,
-      dispatchesText, passengers, countPassengers,
+      landmarksText,
+      days,
+      passengerCount,
+      dispatchesText,
+      passengers,
+      countPassengers,
       ambassadorText;
 
   Future _setTexts() async {
@@ -256,8 +264,15 @@ class DashboardState extends ConsumerState<Dashboard>
     dispatchesText =
         await translator.translate('dispatches', colorAndLocale.locale);
 
-    passengers = await translator.translate('passengers', colorAndLocale.locale);
+    passengers =
+        await translator.translate('passengers', colorAndLocale.locale);
     days = await translator.translate('days', colorAndLocale.locale);
+    ambassadorText =
+        await translator.translate('ambassador', colorAndLocale.locale);
+    countPassengers =
+        await translator.translate('countPassengers', colorAndLocale.locale);
+    passengerCount =
+        await translator.translate('passengerCount', colorAndLocale.locale);
 
     setState(() {});
   }
@@ -280,14 +295,35 @@ class DashboardState extends ConsumerState<Dashboard>
     setState(() {});
   }
 
+  var passengerCounts = <lib.AmbassadorPassengerCount>[];
+
+  Future _getPassengerCounts(bool refresh) async {
+    pp('$mm ... ambassador dashboard; getting counts, noe: ${passengerCounts.length} ...');
+    setState(() {
+      busy = true;
+    });
+    try {
+      final startDate = DateTime.now().toUtc().toIso8601String();
+      passengerCounts = await listApiDog.getAmbassadorPassengerCountsByUser(
+          userId: user!.userId!, refresh: refresh, startDate: startDate);
+      _aggregatePassengers();
+      pp('$mm ... ambassador dashboard; passengerCounts: ${passengerCounts.length} ...');
+    } catch (e) {
+      pp(e);
+    }
+    setState(() {
+      busy = false;
+    });
+  }
+
   Future _getDispatches(bool refresh) async {
     pp('$mm ... marshal dashboard; getting dispatches: ${dispatchRecords.length} ...');
     setState(() {
       busy = true;
     });
     try {
-      dispatchRecords =
-              await listApiDog.getMarshalDispatchRecords(userId:user!.userId!, refresh: refresh, days: daysForData);
+      dispatchRecords = await listApiDog.getMarshalDispatchRecords(
+          userId: user!.userId!, refresh: refresh, days: daysForData);
       _aggregatePassengers();
       pp('$mm ... marshal dashboard; dispatchRecords: ${dispatchRecords.length} ...');
     } catch (e) {
@@ -323,7 +359,6 @@ class DashboardState extends ConsumerState<Dashboard>
   void _navigateToCountPassengers() async {
     pp('$mm ... _navigateToCountPassengers ...');
     navigateWithScale(const ScanVehicleForCounts(), context);
-
   }
 
   Future _navigateToColor() async {
@@ -365,87 +400,95 @@ class DashboardState extends ConsumerState<Dashboard>
                       _navigateToScanDispatch();
                     },
                     icon: Icon(
-                      Icons.scanner,
+                      Icons.airport_shuttle,
                       color: Theme.of(context).primaryColor,
                     )),
               ],
             ),
             body: Stack(
               children: [
-
-                   Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child:  Card(
-                          shape: getRoundedBorder(radius: 16),
-                          elevation: 4,
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 32,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    shape: getRoundedBorder(radius: 16),
+                    elevation: 4,
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        Text(
+                          user == null
+                              ? 'Association Name'
+                              : user!.associationName!,
+                          style: myTextStyleMediumLargeWithColor(
+                              context, Theme.of(context).primaryColor, 18),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          user == null ? 'Ambassador Name' : user!.name,
+                          style: myTextStyleSmall(context),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        SizedBox(
+                            width: 300,
+                            child: ElevatedButton.icon(
+                              icon: const Icon(Icons.people),
+                              style:  ButtonStyle(
+                                elevation: const MaterialStatePropertyAll(8.0),
+                                shape: MaterialStatePropertyAll(getRoundedBorder(radius: 16))
                               ),
-                              Text(
-                                user == null
-                                    ? 'Association Name'
-                                    : user!.associationName!,
-                                style: myTextStyleMediumLargeWithColor(context,
-                                    Theme.of(context).primaryColor, 18),
+                              onPressed: () {
+                                _navigateToCountPassengers();
+                              },
+                              label: Padding(
+                                padding: const EdgeInsets.all(28.0),
+                                child: Text(countPassengers == null
+                                    ? 'Count Passengers'
+                                    : countPassengers!),
                               ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                user == null ? 'Ambassador Name' : user!.name,
-                                style: myTextStyleSmall(context),
-                              ),
-                              const SizedBox(
-                                height: 24,
-                              ),
-                              SizedBox(
-                                  width: 300,
-                                  child: ElevatedButton.icon(
-                                    icon: const Icon(Icons.people),
-                                    style: const ButtonStyle(
-                                        elevation: MaterialStatePropertyAll(8.0),
-
-                                    ),
-                                      onPressed: () {
-                                        _navigateToCountPassengers();
-                                      },
-                                      label:  Padding(
-                                        padding: const EdgeInsets.all(28.0),
-                                        child: Text(countPassengers == null
-                                            ? 'Count Passengers'
-                                            : countPassengers!),
-                                      ),
-                                      )),
-                              const SizedBox(
-                                height: 24,
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Row(mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      DaysDropDown(onDaysPicked: (days){
-                                        daysForData = days;
-                                        setState(() {
-
-                                        });
-                                        _getDispatches(true);
-                                      }, hint: days == null? 'Days': days!),
-                                      const SizedBox(width: 20,),
-                                      Text('$daysForData', style: myTextStyleMediumLargeWithColor(context, Theme.of(context).primaryColorLight, 24),)
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              busy
-                                  ? const Center(
+                            )),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                DaysDropDown(
+                                    onDaysPicked: (days) {
+                                      daysForData = days;
+                                      setState(() {});
+                                      _getDispatches(true);
+                                    },
+                                    hint: days == null ? 'Days' : days!),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  '$daysForData',
+                                  style: myTextStyleMediumLargeWithColor(
+                                      context,
+                                      Theme.of(context).primaryColorLight,
+                                      24),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        busy
+                            ? const Center(
                                 child: SizedBox(
                                   height: 24,
                                   width: 24,
@@ -454,66 +497,79 @@ class DashboardState extends ConsumerState<Dashboard>
                                     backgroundColor: Colors.white,
                                   ),
                                 ),
-                              ) : Expanded(
+                              )
+                            : Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: user == null? const SizedBox() : GridView(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 2,
-                                      mainAxisSpacing: 2,
-                                      crossAxisCount: 2,
-                                    ),
-                                    children: [
-                                      TotalWidget(
-                                          caption: dispatchesText == null
-                                              ? 'Dispatches'
-                                              : dispatchesText!,
-                                          number: dispatchRecords.length,
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 32,
-                                          onTapped: () {}),
-                                      TotalWidget(
-                                          caption: passengers == null
-                                              ? 'Passengers'
-                                              : passengers!,
-                                          number: totalPassengers,
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 32,
-                                          onTapped: () {}),
-                                      TotalWidget(
-                                          caption: vehiclesText == null
-                                              ? 'Vehicles'
-                                              : vehiclesText!,
-                                          number: cars.length,
-                                          color: Colors.grey.shade600,
-                                          fontSize: 32,
-                                          onTapped: () {}),
-                                      TotalWidget(
-                                          caption: routesText == null
-                                              ? 'Routes'
-                                              : routesText!,
-                                          number: routes.length,
-                                          color: Colors.grey.shade600,
-                                          fontSize: 32,
-                                          onTapped: () {}),
-                                      TotalWidget(
-                                          caption: landmarksText == null
-                                              ? 'Landmarks'
-                                              : landmarksText!,
-                                          number: routeLandmarks.length,
-                                          color: Colors.grey.shade600,
-                                          fontSize: 32,
-                                          onTapped: () {}),
-
-                                    ],
-                                  ),
+                                  child: user == null
+                                      ? const SizedBox()
+                                      : GridView(
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisSpacing: 2,
+                                            mainAxisSpacing: 2,
+                                            crossAxisCount: 2,
+                                          ),
+                                          children: [
+                                            TotalWidget(
+                                                caption: passengerCount == null
+                                                    ? 'Passenger Counts'
+                                                    : passengerCount!,
+                                                number: passengerCounts.length,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 32,
+                                                onTapped: () {}),
+                                            TotalWidget(
+                                                caption: dispatchesText == null
+                                                    ? 'Dispatches'
+                                                    : dispatchesText!,
+                                                number: dispatchRecords.length,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 32,
+                                                onTapped: () {}),
+                                            TotalWidget(
+                                                caption: passengers == null
+                                                    ? 'Passengers'
+                                                    : passengers!,
+                                                number: totalPassengers,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 32,
+                                                onTapped: () {}),
+                                            TotalWidget(
+                                                caption: vehiclesText == null
+                                                    ? 'Vehicles'
+                                                    : vehiclesText!,
+                                                number: cars.length,
+                                                color: Colors.grey.shade600,
+                                                fontSize: 32,
+                                                onTapped: () {}),
+                                            TotalWidget(
+                                                caption: routesText == null
+                                                    ? 'Routes'
+                                                    : routesText!,
+                                                number: routes.length,
+                                                color: Colors.grey.shade600,
+                                                fontSize: 32,
+                                                onTapped: () {}),
+                                            TotalWidget(
+                                                caption: landmarksText == null
+                                                    ? 'Landmarks'
+                                                    : landmarksText!,
+                                                number: routeLandmarks.length,
+                                                color: Colors.grey.shade600,
+                                                fontSize: 32,
+                                                onTapped: () {}),
+                                          ],
+                                        ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      ],
+                    ),
+                  ),
+                ),
                 user == null
                     ? Positioned(
                         left: 24,
@@ -593,7 +649,11 @@ class TotalWidget extends StatelessWidget {
           child: Center(
             child: SizedBox(
               height: 80,
-              child: NumberAndCaption(caption: caption, number: number, color: color, fontSize: fontSize),
+              child: NumberAndCaption(
+                  caption: caption,
+                  number: number,
+                  color: color,
+                  fontSize: fontSize),
             ),
           ),
         ),
@@ -601,8 +661,15 @@ class TotalWidget extends StatelessWidget {
     );
   }
 }
+
 class NumberAndCaption extends StatelessWidget {
-  const NumberAndCaption({Key? key, required this.caption, required this.number, required this.color, required this.fontSize}) : super(key: key);
+  const NumberAndCaption(
+      {Key? key,
+      required this.caption,
+      required this.number,
+      required this.color,
+      required this.fontSize})
+      : super(key: key);
   final String caption;
   final int number;
   final Color color;
@@ -610,13 +677,13 @@ class NumberAndCaption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fmt = NumberFormat.decimalPattern();
-    return SizedBox(height: 64,
+    return SizedBox(
+      height: 64,
       child: Column(
         children: [
           Text(
             fmt.format(number),
-            style:
-            myNumberStyleLargerWithColor(color, fontSize, context),
+            style: myNumberStyleLargerWithColor(color, fontSize, context),
           ),
           const SizedBox(
             height: 4,
@@ -630,4 +697,3 @@ class NumberAndCaption extends StatelessWidget {
     );
   }
 }
-

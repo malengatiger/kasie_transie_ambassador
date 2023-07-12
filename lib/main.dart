@@ -6,8 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kasie_transie_ambassador/ui/dashboard.dart';
 import 'package:kasie_transie_library/bloc/theme_bloc.dart';
 import 'package:kasie_transie_library/data/schemas.dart' as lib;
+import 'package:kasie_transie_library/isolates/dispatch_isolate.dart';
+import 'package:kasie_transie_library/isolates/heartbeat_isolate.dart';
 import 'package:kasie_transie_library/messaging/heartbeat.dart';
 import 'package:kasie_transie_library/providers/kasie_providers.dart';
+import 'package:kasie_transie_library/utils/beeper.dart';
 import 'package:kasie_transie_library/utils/emojis.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
@@ -40,8 +43,8 @@ Future<void> main() async {
   Workmanager().initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode:
-      true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-  );
+          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+      );
 
   runApp(const ProviderScope(child: AmbassadorApp()));
 }
@@ -53,10 +56,10 @@ class AmbassadorApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     pp('$mx ref from RiverPod Provider: ref: $ref');
-    var m = ref.watch(countryProvider);
-    if (m.hasValue) {
-      pp('$mx value from the watch: ${m.value?.length} from RiverPod Provide');
-    }
+    // var m = ref.watch(countryProvider);
+    // if (m.hasValue) {
+    //   pp('$mx value from the watch: ${m.value?.length} from RiverPod Provide');
+    // }
 
     return StreamBuilder(
         stream: themeBloc.localeAndThemeStream,
@@ -88,5 +91,15 @@ class AmbassadorApp extends ConsumerWidget {
           );
         });
   }
+}
 
+final FailedChecker failedChecker = FailedChecker();
+class FailedChecker {
+
+  void startChecking() async {
+    pp('$mx ... checking for failed uploads ....');
+    await heartbeatIsolate.addHeartbeat();
+    await dispatchIsolate.addFailedAmbassadorPassengerCounts();
+    await dispatchIsolate.addFailedDispatchRecords();
+  }
 }
