@@ -19,6 +19,7 @@
     "locationResponse": "收到出租车当前位置",
     "createOrUpdate": "创建或更新出租车路线\u0027",
     "af": "非洲人",
+    "thisMayTakeMinutes": "加载数据可能需要几分钟",
     "vehicleQRCode\u0027": "车辆二维码\u0027",
     "routeStart": "路线起点",
     "routePointsMapped": "映射的路线点",
@@ -40,6 +41,7 @@
     "search": "搜索",
     "routeEditor": "路线编辑器",
     "taxiDriver": "出租车司机",
+    "thisMayTakeSeconds": "加载数据可能需要几秒钟",
     "sn": "绍纳语",
     "createNewPlace": "创建一个将在您的路线中使用的新地点",
     "st": "索托语",
@@ -129,6 +131,7 @@
     "totalPassenger": "总发送旅客量",
     "enterPhone": "输入电话号码",
     "index": "指数",
+    "loadingOwnerData": "加载所有者数据",
     "loading": "加载关联数据",
     "zh": "普通话",
     "dispatchSaved": "出租车调度已记录，谢谢！",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "身份验证失败，请检查您的电子邮件和密码",
     "errorGettingData": "获取数据时出错",
     "fileSize": "文件大小",
+    "loadingPassengerData": "加载乘客数据",
     "recordingComplete": "录音完成",
     "youAreHere": "出租车就在这个位置",
     "route`color": "路线颜色",
@@ -202,6 +206,7 @@
     "emailSignIn": "电子邮件登录",
     "currentPassengers": "目前的乘客",
     "loadingRoutes": "加载出租车路线信息",
-    "dispatchFailed": "车辆派出失败。请再试一次"
+    "dispatchFailed": "车辆派出失败。请再试一次",
+    "loadingVehicleData": "加载车辆数据"
   }
 }

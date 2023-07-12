@@ -19,6 +19,7 @@
     "locationResponse": "ITeksi Indawo ekuyo ngoku ifunyenwe",
     "createOrUpdate": "Yenza okanye uhlaziye indlela yeteksi\u0027",
     "af": "umAfrika",
+    "thisMayTakeMinutes": "Oku kungathatha imizuzu embalwa ukulayisha idatha",
     "vehicleQRCode\u0027": "Ikhowudi yeQR yemoto\u0027",
     "routeStart": "Indlela yokuQalisa",
     "routePointsMapped": "Amanqaku eNdlela afakwe kwiMaphu",
@@ -40,6 +41,7 @@
     "search": "Khangela",
     "routeEditor": "Umhleli weNdlela",
     "taxiDriver": "Umqhubi weteksi",
+    "thisMayTakeSeconds": "Oku kungathatha imizuzwana embalwa ukulayisha idatha",
     "sn": "IsiShona",
     "createNewPlace": "Yenza indawo entsha eza kusetyenziswa kwiindlela zakho",
     "st": "isiSuthu",
@@ -129,6 +131,7 @@
     "totalPassenger": "ABakhweli abaThunyelweyo bebonke",
     "enterPhone": "Faka inombolo yefowuni",
     "index": "Isalathiso",
+    "loadingOwnerData": "Ilayisha idatha yoMnini",
     "loading": "Ilayisha idatha yoMbutho",
     "zh": "IsiMandarin",
     "dispatchSaved": "I-Taxi Dispatch ishicilelwe, enkosi!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Ukuqinisekisa akuphumelelanga, nceda ujonge i-imeyile yakho kunye negama lokugqitha",
     "errorGettingData": "Impazamo ekufumaneni idatha",
     "fileSize": "Ubungakanani beFayile",
+    "loadingPassengerData": "Ilayisha idatha yoMkhweli",
     "recordingComplete": "Ukurekhoda kugqityiwe",
     "youAreHere": "Iteksi ikule ndawo",
     "route`color": "Umbala weNdlela",
@@ -202,6 +206,7 @@
     "emailSignIn": "Ngena Ngeimeyile",
     "currentPassengers": "Abakhweli bangoku",
     "loadingRoutes": "Ilayisha ulwazi lweNdlela yeTeksi",
-    "dispatchFailed": "Imoto ethunyelweyo ayiphumelelanga. Nceda zama kwakhona"
+    "dispatchFailed": "Imoto ethunyelweyo ayiphumelelanga. Nceda zama kwakhona",
+    "loadingVehicleData": "Ilayisha idatha yeMoto"
   }
 }

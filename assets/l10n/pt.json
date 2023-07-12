@@ -19,6 +19,7 @@
     "locationResponse": "Localização Atual do Táxi Recebida",
     "createOrUpdate": "Crie ou atualize a Rota do táxi\u0027",
     "af": "africano",
+    "thisMayTakeMinutes": "Isso pode levar alguns minutos para carregar os dados",
     "vehicleQRCode\u0027": "Código QR do veículo\u0027",
     "routeStart": "Início da rota",
     "routePointsMapped": "Pontos de Rota Mapeados",
@@ -40,6 +41,7 @@
     "search": "Procurar",
     "routeEditor": "Editor de rota",
     "taxiDriver": "Taxista",
+    "thisMayTakeSeconds": "Isso pode levar alguns segundos para carregar os dados",
     "sn": "Shona",
     "createNewPlace": "Crie um novo local que será usado em suas rotas",
     "st": "sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Total de Passageiros Despachados",
     "enterPhone": "Digite o número de telefone",
     "index": "Índice",
+    "loadingOwnerData": "Carregando dados do proprietário",
     "loading": "Carregando dados da associação",
     "zh": "mandarim",
     "dispatchSaved": "O Despacho de Táxi foi registrado, obrigado!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Falha na autenticação, verifique seu e-mail e senha",
     "errorGettingData": "Erro ao obter dados",
     "fileSize": "Tamanho do arquivo",
+    "loadingPassengerData": "Carregando dados do passageiro",
     "recordingComplete": "Gravação concluída",
     "youAreHere": "O táxi está neste local",
     "route`color": "Cor da rota",
@@ -202,6 +206,7 @@
     "emailSignIn": "E-mail Entrar",
     "currentPassengers": "Passageiros Atuais",
     "loadingRoutes": "Carregando informações de rota de táxi",
-    "dispatchFailed": "O veículo despachado falhou. Por favor, tente novamente"
+    "dispatchFailed": "O veículo despachado falhou. Por favor, tente novamente",
+    "loadingVehicleData": "Carregando dados do veículo"
   }
 }

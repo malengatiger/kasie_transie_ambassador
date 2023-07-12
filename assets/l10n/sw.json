@@ -19,6 +19,7 @@
     "locationResponse": "Eneo la Sasa la Teksi Limepokelewa",
     "createOrUpdate": "Unda au usasishe Njia ya teksi\u0027",
     "af": "Mwafrika",
+    "thisMayTakeMinutes": "Hii inaweza kuchukua dakika chache kupakia data",
     "vehicleQRCode\u0027": "Msimbo wa QR wa Gari\u0027",
     "routeStart": "Njia ya Kuanza",
     "routePointsMapped": "Pointi za Njia Zimepangwa",
@@ -40,6 +41,7 @@
     "search": "Tafuta",
     "routeEditor": "Mhariri wa Njia",
     "taxiDriver": "Dereva teksi",
+    "thisMayTakeSeconds": "Hii inaweza kuchukua sekunde chache kupakia data",
     "sn": "Kishona",
     "createNewPlace": "Unda eneo jipya ambalo litatumika katika njia zako",
     "st": "Kisotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Jumla ya Abiria Waliotumwa",
     "enterPhone": "Weka Nambari ya Simu",
     "index": "Kielezo",
+    "loadingOwnerData": "Inapakia data ya Mmiliki",
     "loading": "Inapakia data ya Muungano",
     "zh": "Mandarin",
     "dispatchSaved": "Usafirishaji wa Teksi umerekodiwa, asante!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Uthibitishaji umeshindwa, tafadhali angalia barua pepe na nenosiri lako",
     "errorGettingData": "Hitilafu katika kupata data",
     "fileSize": "Ukubwa wa faili",
+    "loadingPassengerData": "Inapakia data ya Abiria",
     "recordingComplete": "Kurekodi kumekamilika",
     "youAreHere": "Teksi iko mahali hapa",
     "route`color": "Rangi ya Njia",
@@ -202,6 +206,7 @@
     "emailSignIn": "Ingia kwa Barua Pepe",
     "currentPassengers": "Abiria wa Sasa",
     "loadingRoutes": "Inapakia maelezo ya Njia ya Teksi",
-    "dispatchFailed": "Gari iliyotumwa imeshindwa. Tafadhali jaribu tena"
+    "dispatchFailed": "Gari iliyotumwa imeshindwa. Tafadhali jaribu tena",
+    "loadingVehicleData": "Inapakia data ya Gari"
   }
 }

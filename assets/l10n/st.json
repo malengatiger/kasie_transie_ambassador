@@ -19,6 +19,7 @@
     "locationResponse": "Sebaka sa Hona Joale sa Taxi se Amogetsoe",
     "createOrUpdate": "Theha kapa ntlafatsa tsela ea tekesi\u0027",
     "af": "Moafrika",
+    "thisMayTakeMinutes": "Sena se ka nka metsotso e seng mekae ho kenya data",
     "vehicleQRCode\u0027": "Koutu ea QR ea Koloi\u0027",
     "routeStart": "Tsela ea ho Qala",
     "routePointsMapped": "Lintlha tsa Tsela li \u0027mapa",
@@ -40,6 +41,7 @@
     "search": "Batla",
     "routeEditor": "Mohlophisi oa litsela",
     "taxiDriver": "Mokhanni oa tekesi",
+    "thisMayTakeSeconds": "Sena se ka nka metsotsoana e seng mekae ho kenya data",
     "sn": "Seshona",
     "createNewPlace": "Theha sebaka se secha se tla sebelisoa litseleng tsa hau",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Kakaretso ea Bapalami ba Rometsoeng",
     "enterPhone": "Kenya Nomoro ea Mohala",
     "index": "Index",
+    "loadingOwnerData": "E kenya data ea Beng",
     "loading": "Kenya lintlha tsa Mokhatlo",
     "zh": "Semandarine",
     "dispatchSaved": "Thekisi ea Tekesi e rekotile, kea leboha!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Netefatso e hlolehile, ka kopo sheba lengolo-tsoibila la hau le password",
     "errorGettingData": "Phoso ea ho fumana lintlha",
     "fileSize": "Boholo ba faele",
+    "loadingPassengerData": "E kenya data ea bapalami",
     "recordingComplete": "Ho rekota ho felile",
     "youAreHere": "Thekisi e sebakeng sena",
     "route`color": "\u0027Mala oa Tsela",
@@ -202,6 +206,7 @@
     "emailSignIn": "Kena ka lengolo-tsoibila",
     "currentPassengers": "Bapalami ba Hona Joale",
     "loadingRoutes": "E kenya lintlha tsa Tsela ea Taxi",
-    "dispatchFailed": "Koloi e rometsoeng e hlolehile. Ka kopo, leka hape"
+    "dispatchFailed": "Koloi e rometsoeng e hlolehile. Ka kopo, leka hape",
+    "loadingVehicleData": "E kenya data ea Koloi"
   }
 }

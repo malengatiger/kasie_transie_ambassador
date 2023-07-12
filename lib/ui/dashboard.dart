@@ -277,7 +277,7 @@ class DashboardState extends ConsumerState<Dashboard>
     setState(() {});
   }
 
-  int daysForData = 7;
+  int daysForData = 1;
   Future _getRoutes() async {
     pp('$mm ... marshal dashboard; getting routes: ${routes.length} ...');
 

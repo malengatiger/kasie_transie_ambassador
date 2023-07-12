@@ -19,6 +19,7 @@
     "locationResponse": "Taxi Huidige ligging ontvang",
     "createOrUpdate": "Skep of werk die taxi-roete op\u0027",
     "af": "Afrikaans",
+    "thisMayTakeMinutes": "Dit kan \u0027n paar minute neem om die data te laai",
     "vehicleQRCode\u0027": "Voertuig QR-kode\u0027",
     "routeStart": "Roete begin",
     "routePointsMapped": "Roetepunte gekarteer",
@@ -40,6 +41,7 @@
     "search": "Soek",
     "routeEditor": "Roete-redakteur",
     "taxiDriver": "Taxibestuurder",
+    "thisMayTakeSeconds": "Dit kan \u0027n paar sekondes neem om die data te laai",
     "sn": "Shona",
     "createNewPlace": "Skep \u0027n nuwe plek wat in jou roetes gebruik sal word",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Totale uitgestuurde passasiers",
     "enterPhone": "Voer telefoonnommer in",
     "index": "Indeks",
+    "loadingOwnerData": "Laai tans Eienaardata",
     "loading": "Laai Verenigingsdata",
     "zh": "Mandaryns",
     "dispatchSaved": "Taxi-versending is opgeneem, dankie!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Verifikasie het misluk, gaan asseblief jou e-posadres en wagwoord na",
     "errorGettingData": "Kon nie data kry nie",
     "fileSize": "Lêergrootte",
+    "loadingPassengerData": "Laai passasiersdata",
     "recordingComplete": "Opname voltooi",
     "youAreHere": "Die taxi is op hierdie plek",
     "route`color": "Roete Kleur",
@@ -202,6 +206,7 @@
     "emailSignIn": "E-pos Teken in",
     "currentPassengers": "Huidige passasiers",
     "loadingRoutes": "Laai Taxi-roete-inligting",
-    "dispatchFailed": "Voertuig wat gestuur is, het misluk. Probeer asseblief weer"
+    "dispatchFailed": "Voertuig wat gestuur is, het misluk. Probeer asseblief weer",
+    "loadingVehicleData": "Laai tans voertuigdata"
   }
 }

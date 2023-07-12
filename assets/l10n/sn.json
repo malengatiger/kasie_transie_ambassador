@@ -19,6 +19,7 @@
     "locationResponse": "Taxi Nzvimbo Yazvino Yagamuchirwa",
     "createOrUpdate": "Gadzira kana kugadzirisa nzira yetekisi\u0027",
     "af": "African",
+    "thisMayTakeMinutes": "Izvi zvinogona kutora maminetsi mashoma kutakura data",
     "vehicleQRCode\u0027": "Mota QR Code\u0027",
     "routeStart": "Route Start",
     "routePointsMapped": "Route Points Mepu",
@@ -40,6 +41,7 @@
     "search": "Search",
     "routeEditor": "Route Editor",
     "taxiDriver": "Mutyairi weTaxi",
+    "thisMayTakeSeconds": "Izvi zvinogona kutora masekonzi mashoma kurodha data",
     "sn": "Shona",
     "createNewPlace": "Gadzira nzvimbo itsva ichashandiswa munzira dzako",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Total Dispatched Passenger",
     "enterPhone": "Isa Nhamba Yenhare",
     "index": "Index",
+    "loadingOwnerData": "Loading Owner data",
     "loading": "Loading Association data",
     "zh": "Mandarin",
     "dispatchSaved": "Taxi Dispatch yakarekodhwa, ndatenda!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Huchokwadi hwakundikana, ndapota tarisa email yako nepassword",
     "errorGettingData": "Kutadza kuwana data",
     "fileSize": "Saizi Yefaira",
+    "loadingPassengerData": "Kurodha data rePasi",
     "recordingComplete": "Kurekodha kwapera",
     "youAreHere": "Teksi iri panzvimbo iyi",
     "route`color": "Route Color",
@@ -202,6 +206,7 @@
     "emailSignIn": "Email Sign In",
     "currentPassengers": "Current Passenger",
     "loadingRoutes": "Loading Taxi Route information",
-    "dispatchFailed": "Motokari yatumirwa yatadza kushanda. Ndapota edza zvakare"
+    "dispatchFailed": "Motokari yatumirwa yatadza kushanda. Ndapota edza zvakare",
+    "loadingVehicleData": "Loading Vehicle data"
   }
 }

@@ -19,6 +19,7 @@
     "locationResponse": "Ti gba ipo Takisi lọwọlọwọ",
     "createOrUpdate": "Ṣẹda tabi ṣe imudojuiwọn Ipa ọna takisi\u0027",
     "af": "Afirika",
+    "thisMayTakeMinutes": "Eyi le gba to iṣẹju diẹ lati gbe data naa",
     "vehicleQRCode\u0027": "Koodu QR ọkọ \u0027",
     "routeStart": "Ibẹrẹ ipa ọna",
     "routePointsMapped": "Route Points Mapped",
@@ -40,6 +41,7 @@
     "search": "Wa",
     "routeEditor": "Olootu ipa ọna",
     "taxiDriver": "Takisi Driver",
+    "thisMayTakeSeconds": "Eyi le gba iṣẹju diẹ lati gbe data naa",
     "sn": "Shona",
     "createNewPlace": "Ṣẹda aaye tuntun ti yoo ṣee lo ni awọn ipa-ọna rẹ",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Lapapọ Awọn irin-ajo ti a firanṣẹ",
     "enterPhone": "Tẹ Nọmba foonu sii",
     "index": "Atọka",
+    "loadingOwnerData": "Nkojọpọ data eni",
     "loading": "Loading Association data",
     "zh": "Mandarin",
     "dispatchSaved": "Takisi Dispatch ti gba silẹ, o ṣeun!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Ijeri kuna, jọwọ ṣayẹwo imeeli rẹ ati ọrọ igbaniwọle",
     "errorGettingData": "Aṣiṣe gbigba data",
     "fileSize": "Iwọn faili",
+    "loadingPassengerData": "Nkojọpọ data ero ero",
     "recordingComplete": "Gbigbasilẹ ti pari",
     "youAreHere": "Takisi naa wa ni ipo yii",
     "route`color": "Awọ ọna",
@@ -202,6 +206,7 @@
     "emailSignIn": "Imeeli Wọle",
     "currentPassengers": "Awọn arinrin-ajo lọwọlọwọ",
     "loadingRoutes": "Ikojọpọ Taxi Route alaye",
-    "dispatchFailed": "Ọkọ ti a firanṣẹ ti kuna. Jọwọ gbiyanju lẹẹkansi"
+    "dispatchFailed": "Ọkọ ti a firanṣẹ ti kuna. Jọwọ gbiyanju lẹẹkansi",
+    "loadingVehicleData": "Nkojọpọ data ọkọ"
   }
 }

@@ -19,6 +19,7 @@
     "locationResponse": "Thekisi Ndhawu ya sweswi yi amukeriwile",
     "createOrUpdate": "Ku tumbuluxa kumbe ku pfuxeta Ndlela ya mathekisi\u0027.",
     "af": "Xiafrika",
+    "thisMayTakeMinutes": "Leswi swi nga ha teka timinete ti nga ri tingani ku layicha data",
     "vehicleQRCode\u0027": "Khodi ya QR ya Movha\u0027.",
     "routeStart": "Ndlela yo Sungula",
     "routePointsMapped": "Tindhawu Ta Ndlela Leti Endliweke Mepe",
@@ -40,6 +41,7 @@
     "search": "Secha",
     "routeEditor": "Muhleri ​​wa Ndlela",
     "taxiDriver": "Muchayeri wa Thekisi",
+    "thisMayTakeSeconds": "Leswi swi nga ha teka tisekoni ti nga ri tingani ku layicha data",
     "sn": "Xishona",
     "createNewPlace": "Endla ndhawu leyintshwa leyi wil yi tirhisiwaka eka tindlela ta wena",
     "st": "Xisotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Nhlayo Hinkwayo ya Vakhandziyi lava Rhumeriweke",
     "enterPhone": "Nghenisa Nomboro ya Foni",
     "index": "Index",
+    "loadingOwnerData": "Ku layicha data ya N’wini",
     "loading": "Ku layicha datha ya Nhlangano",
     "zh": "Ximandarin",
     "dispatchSaved": "Taxi Dispatch yi rhekhodiwile, ndza khensa!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Ku tiyisisiwa ku tsandzekile, hi kombela u kambela email na phaswedi ya wena",
     "errorGettingData": "Xihoxo xo kuma data",
     "fileSize": "Vukulu bya Fayili",
+    "loadingPassengerData": "Ku layicha data ya Vakhandziyi",
     "recordingComplete": "Ku rhekhoda ku hetisekile",
     "youAreHere": "Thekisi ri le ndzhawini leyi",
     "route`color": "Muhlovo wa Ndlela",
@@ -202,6 +206,7 @@
     "emailSignIn": "Nghena hi Imeyili",
     "currentPassengers": "Vakhandziyi va sweswi",
     "loadingRoutes": "Ku layicha vuxokoxoko bya Ndlela ya Mathekisi",
-    "dispatchFailed": "Movha lowu rhumeriweke wu tsandzekile. Hi kombela u ringeta nakambe"
+    "dispatchFailed": "Movha lowu rhumeriweke wu tsandzekile. Hi kombela u ringeta nakambe",
+    "loadingVehicleData": "Ku layicha data ya Movha"
   }
 }

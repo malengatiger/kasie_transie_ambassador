@@ -19,6 +19,7 @@
     "locationResponse": "Taxi Ubicación actual recibida",
     "createOrUpdate": "Crear o actualizar la ruta del taxi\u0027",
     "af": "africano",
+    "thisMayTakeMinutes": "Esto puede tardar unos minutos en cargar los datos.",
     "vehicleQRCode\u0027": "Código QR del vehículo\u0027",
     "routeStart": "Inicio de ruta",
     "routePointsMapped": "Puntos de ruta asignados",
@@ -40,6 +41,7 @@
     "search": "Buscar",
     "routeEditor": "Editor de rutas",
     "taxiDriver": "Conductor de taxi",
+    "thisMayTakeSeconds": "Esto puede tardar unos segundos en cargar los datos.",
     "sn": "Shona",
     "createNewPlace": "Crea un nuevo lugar que se usará en tus rutas",
     "st": "sesotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Pasajeros Totales Despachados",
     "enterPhone": "Ingresa número telefónico",
     "index": "Índice",
+    "loadingOwnerData": "Cargando datos del propietario",
     "loading": "Cargando datos de asociación",
     "zh": "mandarín",
     "dispatchSaved": "El Despacho de Taxi ha sido registrado, ¡gracias!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "La autenticación falló, verifique su correo electrónico y contraseña",
     "errorGettingData": "Error al obtener datos",
     "fileSize": "Tamaño del archivo",
+    "loadingPassengerData": "Cargando datos de Pasajeros",
     "recordingComplete": "Grabación completa",
     "youAreHere": "El taxi está en este lugar.",
     "route`color": "Color de ruta",
@@ -202,6 +206,7 @@
     "emailSignIn": "Correo electrónico Iniciar sesión",
     "currentPassengers": "Pasajeros Actuales",
     "loadingRoutes": "Cargando información de ruta de taxi",
-    "dispatchFailed": "El vehículo enviado ha fallado. Inténtalo de nuevo"
+    "dispatchFailed": "El vehículo enviado ha fallado. Inténtalo de nuevo",
+    "loadingVehicleData": "Cargando datos del vehículo"
   }
 }

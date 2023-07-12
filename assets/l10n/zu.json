@@ -19,6 +19,7 @@
     "locationResponse": "Indawo Yamanje Yamatekisi Yamukelwe",
     "createOrUpdate": "Dala noma buyekeza Umzila wetekisi\u0027",
     "af": "umAfrika",
+    "thisMayTakeMinutes": "Lokhu kungase kuthathe amaminithi ambalwa ukulayisha idatha",
     "vehicleQRCode\u0027": "Ikhodi ye-QR yemoto\u0027",
     "routeStart": "Ukuqala Komzila",
     "routePointsMapped": "Amaphuzu Omzila Afakwe Imephu",
@@ -40,6 +41,7 @@
     "search": "Sesha",
     "routeEditor": "Umhleli Womzila",
     "taxiDriver": "Umshayeli wetekisi",
+    "thisMayTakeSeconds": "Lokhu kungathatha amasekhondi ambalwa ukulayisha idatha",
     "sn": "IsiShona",
     "createNewPlace": "Dala indawo entsha ezosetshenziswa emizileni yakho",
     "st": "IsiSuthu",
@@ -129,6 +131,7 @@
     "totalPassenger": "Ingqikithi Yabagibeli Abathunyelwe",
     "enterPhone": "Faka Inombolo Yocingo",
     "index": "Inkomba",
+    "loadingOwnerData": "Ilayisha idatha yomnikazi",
     "loading": "Ilayisha idatha yenhlangano",
     "zh": "Isi-Mandarin",
     "dispatchSaved": "I-Taxi Dispatch irekhodiwe, ngiyabonga!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Ukuqinisekisa kuhlulekile, sicela uhlole i-imeyili yakho nephasiwedi",
     "errorGettingData": "Iphutha ekutholeni idatha",
     "fileSize": "Usayizi Wefayela",
+    "loadingPassengerData": "Ilayisha idatha yabagibeli",
     "recordingComplete": "Ukurekhoda kuqediwe",
     "youAreHere": "Itekisi ikule ndawo",
     "route`color": "Umbala Womzila",
@@ -202,6 +206,7 @@
     "emailSignIn": "Ngena ngemvume nge-imeyili",
     "currentPassengers": "Abagibeli Bamanje",
     "loadingRoutes": "Ilayisha ulwazi Lomzila Wamatekisi",
-    "dispatchFailed": "Imoto ethunyelwe yehlulekile. Ngicela uzame futhi"
+    "dispatchFailed": "Imoto ethunyelwe yehlulekile. Ngicela uzame futhi",
+    "loadingVehicleData": "Ilayisha idatha Yemoto"
   }
 }

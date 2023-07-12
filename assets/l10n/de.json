@@ -19,6 +19,7 @@
     "locationResponse": "Aktueller Standort des Taxis empfangen",
     "createOrUpdate": "Erstellen oder aktualisieren Sie die Taxiroute.",
     "af": "afrikanisch",
+    "thisMayTakeMinutes": "Das Laden der Daten kann einige Minuten dauern",
     "vehicleQRCode\u0027": "Fahrzeug-QR-Code\u0027",
     "routeStart": "Routenstart",
     "routePointsMapped": "Routenpunkte kartiert",
@@ -40,6 +41,7 @@
     "search": "Suchen",
     "routeEditor": "Routeneditor",
     "taxiDriver": "Taxifahrer",
+    "thisMayTakeSeconds": "Das Laden der Daten kann einige Sekunden dauern",
     "sn": "Shona",
     "createNewPlace": "Erstellen Sie einen neuen Ort, der in Ihren Routen verwendet wird",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Insgesamt abgefertigte Passagiere",
     "enterPhone": "Telefonnummer eingeben",
     "index": "Index",
+    "loadingOwnerData": "Besitzerdaten werden geladen",
     "loading": "Verbandsdaten werden geladen",
     "zh": "Mandarin",
     "dispatchSaved": "Taxi Dispatch wurde aufgezeichnet, vielen Dank!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Die Authentifizierung ist fehlgeschlagen. Bitte überprüfen Sie Ihre E-Mail-Adresse und Ihr Passwort",
     "errorGettingData": "Fehler beim Abrufen der Daten",
     "fileSize": "Dateigröße",
+    "loadingPassengerData": "Passagierdaten werden geladen",
     "recordingComplete": "Aufnahme abgeschlossen",
     "youAreHere": "Das Taxi steht an dieser Stelle",
     "route`color": "Routenfarbe",
@@ -202,6 +206,7 @@
     "emailSignIn": "E-Mail-Anmeldung",
     "currentPassengers": "Aktuelle Passagiere",
     "loadingRoutes": "Informationen zur Taxiroute werden geladen",
-    "dispatchFailed": "Das versandte Fahrzeug ist ausgefallen. Bitte versuche es erneut"
+    "dispatchFailed": "Das versandte Fahrzeug ist ausgefallen. Bitte versuche es erneut",
+    "loadingVehicleData": "Fahrzeugdaten werden geladen"
   }
 }

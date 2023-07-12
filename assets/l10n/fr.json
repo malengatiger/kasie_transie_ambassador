@@ -19,6 +19,7 @@
     "locationResponse": "Emplacement actuel du taxi reçu",
     "createOrUpdate": "Créer ou mettre à jour l\u0027itinéraire de taxi\u0027",
     "af": "africain",
+    "thisMayTakeMinutes": "Cela peut prendre quelques minutes pour charger les données",
     "vehicleQRCode\u0027": "Code QR du véhicule\u0027",
     "routeStart": "Début de l\u0027itinéraire",
     "routePointsMapped": "Points d\u0027itinéraire cartographiés",
@@ -40,6 +41,7 @@
     "search": "Recherche",
     "routeEditor": "Éditeur d\u0027itinéraire",
     "taxiDriver": "Conducteur de taxi",
+    "thisMayTakeSeconds": "Cela peut prendre quelques secondes pour charger les données",
     "sn": "Shona",
     "createNewPlace": "Créez un nouveau lieu qui sera utilisé dans vos itinéraires",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Nombre total de passagers expédiés",
     "enterPhone": "Entrez le numéro de téléphone",
     "index": "Indice",
+    "loadingOwnerData": "Chargement des données du propriétaire",
     "loading": "Chargement des données d\u0027association",
     "zh": "mandarin",
     "dispatchSaved": "Taxi Dispatch a été enregistré, merci !",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Échec de l\u0027authentification, veuillez vérifier votre e-mail et votre mot de passe",
     "errorGettingData": "Erreur lors de l\u0027obtention des données",
     "fileSize": "Taille du fichier",
+    "loadingPassengerData": "Chargement des données passagers",
     "recordingComplete": "Enregistrement terminé",
     "youAreHere": "Le taxi est à cet endroit",
     "route`color": "Couleur de l\u0027itinéraire",
@@ -202,6 +206,7 @@
     "emailSignIn": "Se connecter par e-mail",
     "currentPassengers": "Passagers actuels",
     "loadingRoutes": "Chargement des informations d\u0027itinéraire de taxi",
-    "dispatchFailed": "Le véhicule envoyé est tombé en panne. Veuillez réessayer"
+    "dispatchFailed": "Le véhicule envoyé est tombé en panne. Veuillez réessayer",
+    "loadingVehicleData": "Chargement des données du véhicule"
   }
 }

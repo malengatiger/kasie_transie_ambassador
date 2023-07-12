@@ -19,6 +19,7 @@
     "locationResponse": "Taxi Current Location Received",
     "createOrUpdate": "Create or update the taxi Route\u0027",
     "af": "African",
+    "thisMayTakeMinutes": "This may take a few minutes to load the data",
     "vehicleQRCode\u0027": "Vehicle QR Code\u0027",
     "routeStart": "Route Start",
     "routePointsMapped": "Route Points Mapped",
@@ -40,6 +41,7 @@
     "search": "Search",
     "routeEditor": "Route Editor",
     "taxiDriver": "Taxi Driver",
+    "thisMayTakeSeconds": "This may take a few seconds to load the data",
     "sn": "Shona",
     "createNewPlace": "Create a new place that wil be used in your routes",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Total Dispatched Passengers",
     "enterPhone": "Enter Phone Number",
     "index": "Index",
+    "loadingOwnerData": "Loading Owner data",
     "loading": "Loading Association data",
     "zh": "Mandarin",
     "dispatchSaved": "Taxi Dispatch has been recorded, thank you!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Authentication failed, please check your email and password",
     "errorGettingData": "Error getting data",
     "fileSize": "File Size",
+    "loadingPassengerData": "Loading Passenger data",
     "recordingComplete": "Recording complete",
     "youAreHere": "The taxi is at this location",
     "route`color": "Route Colour",
@@ -202,6 +206,7 @@
     "emailSignIn": "Email Sign In",
     "currentPassengers": "Current Passengers",
     "loadingRoutes": "Loading Taxi Route information",
-    "dispatchFailed": "Vehicle dispatched has failed. Please try again"
+    "dispatchFailed": "Vehicle dispatched has failed. Please try again",
+    "loadingVehicleData": "Loading Vehicle data"
   }
 }

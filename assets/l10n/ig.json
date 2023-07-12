@@ -19,6 +19,7 @@
     "locationResponse": "Anatara ebe tagzi ugbu a",
     "createOrUpdate": "Mepụta ma ọ bụ melite okporo ụzọ tagzi\u0027",
     "af": "Afrika",
+    "thisMayTakeMinutes": "Nke a nwere ike were nkeji ole na ole iji buo data",
     "vehicleQRCode\u0027": "Koodu QR ụgbọ ala\u0027",
     "routeStart": "Ụzọ mmalite",
     "routePointsMapped": "Edepụtara ihe ụzọ ụzọ",
@@ -40,6 +41,7 @@
     "search": "Chọọ",
     "routeEditor": "Onye na-edezi ụzọ",
     "taxiDriver": "Onye na-anya tagzi",
+    "thisMayTakeSeconds": "Nke a nwere ike were sekọnd ole na ole iji buo data",
     "sn": "Shona",
     "createNewPlace": "Mepụta ebe ọhụrụ a ga-eji n\u0027ụzọ gị",
     "st": "Sotho",
@@ -129,6 +131,7 @@
     "totalPassenger": "Mgbakọta ndị njem ezigara",
     "enterPhone": "Tinye nọmba ekwentị",
     "index": "Index",
+    "loadingOwnerData": "Na-ebu data onye nwe ya",
     "loading": "Na-ebunye data Association",
     "zh": "Mandarin",
     "dispatchSaved": "Edekọla Dispatch Taxi, daalụ!",
@@ -175,6 +178,7 @@
     "emailAuthFailed": "Nyocha dara, biko lelee email na paswọọdụ gị",
     "errorGettingData": "Enwere mperi ịnweta data",
     "fileSize": "Nha faịlụ",
+    "loadingPassengerData": "Na-ebu data onye njem",
     "recordingComplete": "Ndekọ zuru ezu",
     "youAreHere": "Taxi dị n\u0027ebe a",
     "route`color": "Agba ụzọ",
@@ -202,6 +206,7 @@
     "emailSignIn": "Nbanye email",
     "currentPassengers": "Ndị njem ugbu a",
     "loadingRoutes": "Na-ebu ozi okporo ụzọ tagzi",
-    "dispatchFailed": "Ụgbọ ala ezigara adaala. Biko nwaa ọzọ"
+    "dispatchFailed": "Ụgbọ ala ezigara adaala. Biko nwaa ọzọ",
+    "loadingVehicleData": "Na-ebu data ụgbọ ala"
   }
 }
