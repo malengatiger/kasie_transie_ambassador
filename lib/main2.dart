@@ -23,7 +23,6 @@ import 'package:kasie_transie_library/widgets/splash_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:workmanager/workmanager.dart';
 
-import 'auth/signin_with_link.dart';
 import 'firebase_options.dart';
 
 late fb.FirebaseApp firebaseApp;
@@ -32,7 +31,6 @@ var themeIndex = 0;
 lib.User? user;
 const projectId = 'kasietransie';
 const mx = '🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵 KasieTransie Ambassador : main 🔵🔵';
-late EmailLinkAuthProvider emailLinkAuthProvider;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,43 +45,32 @@ Future<void> main() async {
   } else {
     pp('$mx  this user has been initialized! ${E.leaf}: ${user!.name}');
   }
-  // await AppLoader.init();
-  // await SPService.init();
-  // Get.put(AuthService());
+  await AppLoader.init();
+  await SPService.init();
+  Get.put(AuthService());
 
   final action = ActionCodeSettings(
     url: 'https://kasietransie2023.page.link/1gGs',
     handleCodeInApp: true,
     androidMinimumVersion: '1',
-    dynamicLinkDomain: 'kasietransie2023.page.link',
     androidPackageName: 'com.boha.kasie_transie_ambassador',
     // iOSBundleId: 'com.boha.kasieTransieOwner',
   );
-  emailLinkAuthProvider =  EmailLinkAuthProvider(
-    actionCodeSettings: action,
-  );
-  emailLinkAuthProvider.auth = FirebaseAuth.instance;
 
   FirebaseUIAuth.configureProviders([
-    emailLinkAuthProvider,
+    EmailLinkAuthProvider(
+      actionCodeSettings: action,
+    ),
     // ... other providers
   ]);
-  pp('$mx  EmailLinkAuthProvider has been initialized! ${E.leaf}');
-  myPrettyJsonPrint(action.asMap());
-  // check if email
-  final email = await prefs.getEmail();
-  if (email != null) {
-    pp('$mx .... yea! email is $email}');
-  } else {
-    pp('$mx .... yea! email is NULL');
-  }
+  pp('$mx  EmailLinkAuthProvider has been initialized! ${E.leaf} ${action.asMap()}');
   // Check if you received the link via `getInitialLink` first
   final PendingDynamicLinkData? initialLink =
-      await FirebaseDynamicLinks.instance.getInitialLink();
+  await FirebaseDynamicLinks.instance.getInitialLink();
 
   if (initialLink != null) {
     final Uri deepLink = initialLink.link;
-    pp('$mx  ....... initialLink! ${E.leaf}: ${deepLink.data}');
+    pp('$mx  initialLink! ${E.leaf}: ${deepLink.data}');
 
     // Example of using the dynamic link to push the user to a different screen
     //Navigator.of(context).push(route)
@@ -92,7 +79,7 @@ Future<void> main() async {
   }
 
   FirebaseDynamicLinks.instance.onLink.listen(
-    (pendingDynamicLinkData) {
+        (pendingDynamicLinkData) {
       // Set up the `onLink` event listener next as it may be received here
       final Uri deepLink = pendingDynamicLinkData.link;
       pp('$mx  deepLink from listen! ${E.leaf}: ${deepLink.data}');
@@ -102,18 +89,23 @@ Future<void> main() async {
   Workmanager().initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode:
-          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-      );
+      true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  );
 
-  runApp(const AmbassadorApp());
+  runApp(const ProviderScope(child: AmbassadorApp()));
 }
 
-class AmbassadorApp extends StatelessWidget {
+class AmbassadorApp extends ConsumerWidget {
   const AmbassadorApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    pp('$mx ref from RiverPod Provider: ref: $ref');
+    // var m = ref.watch(countryProvider);
+    // if (m.hasValue) {
+    //   pp('$mx value from the watch: ${m.value?.length} from RiverPod Provide');
+    // }
 
     return StreamBuilder(
         stream: themeBloc.localeAndThemeStream,
@@ -131,13 +123,6 @@ class AmbassadorApp extends StatelessWidget {
             theme: themeBloc.getTheme(themeIndex).lightTheme,
             darkTheme: themeBloc.getTheme(themeIndex).darkTheme,
             themeMode: ThemeMode.system,
-            // initialRoute: '/dashboard',
-            // routes: {
-            //     '/login': (context) {
-            //       return const SigninWithLink();
-            //     },
-            //     '/dashboard': (context) => const Dashboard(),
-            //   },
             // home:  const Dashboard(),
             home: AnimatedSplashScreen(
               splash: const SplashWidget(),

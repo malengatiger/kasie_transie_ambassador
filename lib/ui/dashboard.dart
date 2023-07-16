@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_platform_interface/src/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:kasie_transie_library/bloc/data_api_dog.dart';
+import 'package:kasie_transie_ambassador/auth/damn_email_link.dart';
 import 'package:kasie_transie_library/bloc/list_api_dog.dart';
 import 'package:kasie_transie_library/data/color_and_locale.dart';
 import 'package:kasie_transie_library/data/schemas.dart' as lib;
@@ -12,6 +13,7 @@ import 'package:kasie_transie_library/isolates/routes_isolate.dart';
 import 'package:kasie_transie_library/l10n/translation_handler.dart';
 import 'package:kasie_transie_library/messaging/fcm_bloc.dart';
 import 'package:kasie_transie_library/providers/kasie_providers.dart';
+import 'package:kasie_transie_library/utils/emojis.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/navigator_utils.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
@@ -22,7 +24,7 @@ import 'package:kasie_transie_library/bloc/dispatch_helper.dart';
 import 'package:kasie_transie_library/widgets/scan_vehicle_for_counts.dart';
 import 'package:kasie_transie_library/widgets/scan_vehicle_for_media.dart';
 
-import '../auth/phone_auth_signin.dart';
+import '../auth/custom_auth.dart';
 import '../main.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
@@ -152,8 +154,52 @@ class DashboardState extends ConsumerState<Dashboard>
   void _getAuthenticationStatus() async {
     pp('\n\n$mm _getAuthenticationStatus ....... '
         'check both Firebase user and Kasie user');
-    var user = await prefs.getUser();
     var firebaseUser = FirebaseAuth.instance.currentUser;
+
+    final email = await prefs.getEmail();
+    if (email != null && firebaseUser == null) {
+      //todo - find user in mongodb
+      try {
+        final mUser = await listApiDog.getUserByEmail(email);
+        if (mUser != null) {
+          myPrettyJsonPrint(mUser.toJson());
+          await prefs.saveUser(mUser);
+          pp('$mm _getAuthenticationStatus .......${E.redDot} NEED to sign user in with Firebase ');
+          if (mounted) {
+            showSnackBar(
+                duration: const Duration(seconds: 60),
+                backgroundColor: Theme.of(context).primaryColorLight,
+                message: 'Yebo! We are in, Boss!',
+                context: context);
+          }
+          _getData();
+          try {
+            FirebaseAuth.instance
+                .signInWithEmailAndPassword(email: email, password: mUser.password!);
+          } catch (e) {
+            pp(e);
+          }
+        } else {
+          if (mounted) {
+            showSnackBar(
+                          duration: const Duration(seconds: 60),
+                          backgroundColor: Theme.of(context).primaryColorLight,
+                          message: 'You are not registered yet. Please call your administrator',
+                          context: context);
+          };
+        }
+      } catch (e) {
+        pp(e);
+        if (mounted) {
+          showSnackBar(
+              message:
+                  'This email $email not found. Please call your administrator',
+              context: context,
+              duration: const Duration(seconds: 30));
+        }
+      }
+    }
+    var user = await prefs.getUser();
 
     if (user != null && firebaseUser != null) {
       pp('$mm _getAuthenticationStatus .......  '
@@ -190,8 +236,7 @@ class DashboardState extends ConsumerState<Dashboard>
   }
 
   Future<void> _navigateToAuth() async {
-    var res = await navigateWithScale(
-        CellPhoneAuthSignin(dataApiDog: dataApiDog), context);
+    var res = await navigateWithScale(const DamnEmailLink(), context);
     pp('\n\n$mm ................ back from sign in: $res');
     setState(() {
       busy = false;
@@ -438,10 +483,11 @@ class DashboardState extends ConsumerState<Dashboard>
                             width: 300,
                             child: ElevatedButton.icon(
                               icon: const Icon(Icons.people),
-                              style:  ButtonStyle(
-                                elevation: const MaterialStatePropertyAll(8.0),
-                                shape: MaterialStatePropertyAll(getRoundedBorder(radius: 16))
-                              ),
+                              style: ButtonStyle(
+                                  elevation:
+                                      const MaterialStatePropertyAll(8.0),
+                                  shape: MaterialStatePropertyAll(
+                                      getRoundedBorder(radius: 16))),
                               onPressed: () {
                                 _navigateToCountPassengers();
                               },

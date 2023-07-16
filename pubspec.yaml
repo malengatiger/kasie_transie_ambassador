@@ -60,7 +60,12 @@ dependencies:
   realm:
   uuid: ^3.0.7
   flutter_dotenv: ^5.1.0
+  firebase_dynamic_links: ^5.3.4
+  get: ^4.6.5
+  flutter_easyloading: ^3.0.5
+  url_launcher:
 #  background_location: ^0.8.1
+
 
 dev_dependencies:
   flutter_test:

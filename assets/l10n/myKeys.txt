@@ -26,6 +26,7 @@
 	 hashMap['days'] = 'days';
 	 hashMap['de'] = 'de';
 	 hashMap['departures'] = 'departures';
+	 hashMap['desc'] = 'desc';
 	 hashMap['dispatch'] = 'dispatch';
 	 hashMap['dispatchError'] = 'dispatchError';
 	 hashMap['dispatchFailed'] = 'dispatchFailed';
@@ -40,6 +41,7 @@
 	 hashMap['emailAddress'] = 'emailAddress';
 	 hashMap['emailAuth'] = 'emailAuth';
 	 hashMap['emailAuthFailed'] = 'emailAuthFailed';
+	 hashMap['emailAuthTitle'] = 'emailAuthTitle';
 	 hashMap['emailSignIn'] = 'emailSignIn';
 	 hashMap['en'] = 'en';
 	 hashMap['endOfRoute'] = 'endOfRoute';
@@ -50,6 +52,7 @@
 	 hashMap['enterPlace'] = 'enterPlace';
 	 hashMap['enterRouteName'] = 'enterRouteName';
 	 hashMap['errorCount'] = 'errorCount';
+	 hashMap['errorEmailVerification'] = 'errorEmailVerification';
 	 hashMap['errorGettingData'] = 'errorGettingData';
 	 hashMap['errorNetwork'] = 'errorNetwork';
 	 hashMap['errorScanner'] = 'errorScanner';
@@ -105,6 +108,7 @@
 	 hashMap['phoneSignIn'] = 'phoneSignIn';
 	 hashMap['photosAndVideosNow'] = 'photosAndVideosNow';
 	 hashMap['placeMaker'] = 'placeMaker';
+	 hashMap['pleaseEnterEmail'] = 'pleaseEnterEmail';
 	 hashMap['pleaseEnterRouteName'] = 'pleaseEnterRouteName';
 	 hashMap['pleaseSelectRoute'] = 'pleaseSelectRoute';
 	 hashMap['pleaseTakePhotosVideos'] = 'pleaseTakePhotosVideos';
@@ -144,6 +148,7 @@
 	 hashMap['search'] = 'search';
 	 hashMap['searchVehicles'] = 'searchVehicles';
 	 hashMap['selectAss'] = 'selectAss';
+	 hashMap['selectLangColor'] = 'selectLangColor';
 	 hashMap['selectRoute'] = 'selectRoute';
 	 hashMap['selectSignInKind'] = 'selectSignInKind';
 	 hashMap['selectStartEnd'] = 'selectStartEnd';
@@ -163,6 +168,8 @@
 	 hashMap['startPhotoVideo'] = 'startPhotoVideo';
 	 hashMap['startVideo'] = 'startVideo';
 	 hashMap['stopVideo'] = 'stopVideo';
+	 hashMap['submitText'] = 'submitText';
+	 hashMap['successEmailVerification'] = 'successEmailVerification';
 	 hashMap['sw'] = 'sw';
 	 hashMap['takePhotos'] = 'takePhotos';
 	 hashMap['takePicture'] = 'takePicture';
