@@ -53,7 +53,27 @@ Future<void> main() async {
     // iOSBundleId: 'com.boha.kasieTransieOwner',
   );
   await initializeEmailLinkProvider(action);
+  FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
+    final Uri deepLink = dynamicLinkData.link;
+    bool foo = FirebaseAuth.instance.isSignInWithEmailLink(deepLink.toString());
+    pp('...... deepLink is email link? $foo');
+    pp(dynamicLinkData.asMap());
+    // if (FirebaseAuth.instance.isSignInWithEmailLink(dynamicLinkData.link.toString())) {
+    //   try {
+    //     // The client SDK will parse the code from the link for you.
+    //     final userCredential = await FirebaseAuth.instance
+    //         .signInWithEmailLink(email: emailAuth, emailLink: emailLink);
+    //
+    //     // You can access the new user via userCredential.user.
+    //     final emailAddress = userCredential.user?.email;
+    //
+    //     pp('Successfully signed in with email link!');
+    //   } catch (error) {
+    //     pp('Error signing in with email link.');
+    //   }
+    // }
 
+  });
   Workmanager().initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
       isInDebugMode:
