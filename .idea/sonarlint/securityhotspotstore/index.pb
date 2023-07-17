@@ -13,8 +13,6 @@ U
 %.idea/libraries/KotlinJavaRuntime.xml,0/2/02ddf5725f2ec9b67991423205d2b1a2009ccd06
 U
 %.idea/runConfigurations/main_dart.xml,4/0/4075432bf12db9b56969c95a525e03d742f7e86d
-O
-lib/auth/email_auth_signin.dart,2/a/2a121924df2544ed1851a2a61b5ca978703d1370
 =
 macos/Podfile,6/4/64d67c25b6ef192830bfd3132cbb847fff8cb5b9
 ]

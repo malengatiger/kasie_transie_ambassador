@@ -6,10 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:firebase_core/firebase_core.dart' as fb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:kasie_transie_ambassador/services/auth/auth_service.dart';
-import 'package:kasie_transie_ambassador/services/auth/sp_service.dart';
-import 'package:kasie_transie_ambassador/services/utils/app_loader.dart';
 import 'package:kasie_transie_ambassador/ui/dashboard.dart';
 import 'package:kasie_transie_library/bloc/theme_bloc.dart';
 import 'package:kasie_transie_library/data/schemas.dart' as lib;
@@ -19,11 +15,11 @@ import 'package:kasie_transie_library/messaging/heartbeat.dart';
 import 'package:kasie_transie_library/utils/emojis.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
+import 'package:kasie_transie_library/widgets/auth/damn_email_link.dart';
 import 'package:kasie_transie_library/widgets/splash_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:workmanager/workmanager.dart';
 
-import 'auth/signin_with_link.dart';
 import 'firebase_options.dart';
 
 late fb.FirebaseApp firebaseApp;
@@ -32,7 +28,7 @@ var themeIndex = 0;
 lib.User? user;
 const projectId = 'kasietransie';
 const mx = '🔵🔵🔵🔵🔵🔵🔵🔵🔵🔵 KasieTransie Ambassador : main 🔵🔵';
-late EmailLinkAuthProvider emailLinkAuthProvider;
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,9 +43,6 @@ Future<void> main() async {
   } else {
     pp('$mx  this user has been initialized! ${E.leaf}: ${user!.name}');
   }
-  // await AppLoader.init();
-  // await SPService.init();
-  // Get.put(AuthService());
 
   final action = ActionCodeSettings(
     url: 'https://kasietransie2023.page.link/1gGs',
@@ -59,45 +52,7 @@ Future<void> main() async {
     androidPackageName: 'com.boha.kasie_transie_ambassador',
     // iOSBundleId: 'com.boha.kasieTransieOwner',
   );
-  emailLinkAuthProvider =  EmailLinkAuthProvider(
-    actionCodeSettings: action,
-  );
-  emailLinkAuthProvider.auth = FirebaseAuth.instance;
-
-  FirebaseUIAuth.configureProviders([
-    emailLinkAuthProvider,
-    // ... other providers
-  ]);
-  pp('$mx  EmailLinkAuthProvider has been initialized! ${E.leaf}');
-  myPrettyJsonPrint(action.asMap());
-  // check if email
-  final email = await prefs.getEmail();
-  if (email != null) {
-    pp('$mx .... yea! email is $email}');
-  } else {
-    pp('$mx .... yea! email is NULL');
-  }
-  // Check if you received the link via `getInitialLink` first
-  final PendingDynamicLinkData? initialLink =
-      await FirebaseDynamicLinks.instance.getInitialLink();
-
-  if (initialLink != null) {
-    final Uri deepLink = initialLink.link;
-    pp('$mx  ....... initialLink! ${E.leaf}: ${deepLink.data}');
-
-    // Example of using the dynamic link to push the user to a different screen
-    //Navigator.of(context).push(route)
-  } else {
-    pp('$mx  initialLink is null! ${E.redDot}');
-  }
-
-  FirebaseDynamicLinks.instance.onLink.listen(
-    (pendingDynamicLinkData) {
-      // Set up the `onLink` event listener next as it may be received here
-      final Uri deepLink = pendingDynamicLinkData.link;
-      pp('$mx  deepLink from listen! ${E.leaf}: ${deepLink.data}');
-    },
-  );
+  await initializeEmailLinkProvider(action);
 
   Workmanager().initialize(
       callbackDispatcher, // The top level function, aka callbackDispatcher
@@ -105,8 +60,9 @@ Future<void> main() async {
           true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
       );
 
-  runApp(const AmbassadorApp());
+  runApp(const ProviderScope(child: AmbassadorApp()));
 }
+
 
 class AmbassadorApp extends StatelessWidget {
   const AmbassadorApp({super.key});

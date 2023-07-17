@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_platform_interface/src/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:kasie_transie_ambassador/auth/damn_email_link.dart';
+import 'package:kasie_transie_library/bloc/dispatch_helper.dart';
 import 'package:kasie_transie_library/bloc/list_api_dog.dart';
 import 'package:kasie_transie_library/data/color_and_locale.dart';
 import 'package:kasie_transie_library/data/schemas.dart' as lib;
@@ -13,18 +12,18 @@ import 'package:kasie_transie_library/isolates/routes_isolate.dart';
 import 'package:kasie_transie_library/l10n/translation_handler.dart';
 import 'package:kasie_transie_library/messaging/fcm_bloc.dart';
 import 'package:kasie_transie_library/providers/kasie_providers.dart';
-import 'package:kasie_transie_library/utils/emojis.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/navigator_utils.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
+import 'package:kasie_transie_library/utils/user_utils.dart';
+import 'package:kasie_transie_library/widgets/auth/cell_auth_signin.dart';
+import 'package:kasie_transie_library/widgets/auth/damn_email_link.dart';
 import 'package:kasie_transie_library/widgets/days_drop_down.dart';
 import 'package:kasie_transie_library/widgets/dispatch_via_scan.dart';
 import 'package:kasie_transie_library/widgets/language_and_color_chooser.dart';
-import 'package:kasie_transie_library/bloc/dispatch_helper.dart';
 import 'package:kasie_transie_library/widgets/scan_vehicle_for_counts.dart';
 import 'package:kasie_transie_library/widgets/scan_vehicle_for_media.dart';
 
-import '../auth/custom_auth.dart';
 import '../main.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
@@ -155,69 +154,22 @@ class DashboardState extends ConsumerState<Dashboard>
     pp('\n\n$mm _getAuthenticationStatus ....... '
         'check both Firebase user and Kasie user');
     var firebaseUser = FirebaseAuth.instance.currentUser;
-
-    final email = await prefs.getEmail();
-    if (email != null && firebaseUser == null) {
-      //todo - find user in mongodb
-      try {
-        final mUser = await listApiDog.getUserByEmail(email);
-        if (mUser != null) {
-          myPrettyJsonPrint(mUser.toJson());
-          await prefs.saveUser(mUser);
-          pp('$mm _getAuthenticationStatus .......${E.redDot} NEED to sign user in with Firebase ');
-          if (mounted) {
-            showSnackBar(
-                duration: const Duration(seconds: 60),
-                backgroundColor: Theme.of(context).primaryColorLight,
-                message: 'Yebo! We are in, Boss!',
-                context: context);
-          }
-          _getData();
-          try {
-            FirebaseAuth.instance
-                .signInWithEmailAndPassword(email: email, password: mUser.password!);
-          } catch (e) {
-            pp(e);
-          }
-        } else {
-          if (mounted) {
-            showSnackBar(
-                          duration: const Duration(seconds: 60),
-                          backgroundColor: Theme.of(context).primaryColorLight,
-                          message: 'You are not registered yet. Please call your administrator',
-                          context: context);
-          };
-        }
-      } catch (e) {
-        pp(e);
-        if (mounted) {
-          showSnackBar(
-              message:
-                  'This email $email not found. Please call your administrator',
-              context: context,
-              duration: const Duration(seconds: 30));
-        }
-      }
-    }
-    var user = await prefs.getUser();
-
-    if (user != null && firebaseUser != null) {
-      pp('$mm _getAuthenticationStatus .......  '
-          '🥬🥬🥬auth is DEFINITELY authenticated and OK');
-      user = await prefs.getUser();
-      authed = true;
+    authed = await checkEmail(firebaseUser);
+    if (authed) {
+      pp('\n\n$mm _getAuthenticationStatus ....... authed: $authed');
       fcmBloc.subscribeToTopics('AmbassadorApp');
       failedChecker.startChecking();
       setState(() {});
       _getData();
-    } else {
-      pp('$mm _getAuthenticationStatus ....... NOT AUTHENTICATED! '
-          '🌼🌼🌼 ... will clean house!!');
-      authed = false;
-      //todo - ensure that the right thing gets done!
-      pp('$mm _getAuthenticationStatus .......  '
-          '🔴🔴🔴🔴'
-          'the device should be ready for sign in or registration');
+      return;
+    }
+    authed = await checkUser(firebaseUser);
+    if (authed) {
+      pp('\n\n$mm _getAuthenticationStatus ....... authed: $authed');
+      fcmBloc.subscribeToTopics('AmbassadorApp');
+      failedChecker.startChecking();
+      setState(() {});
+      _getData();
     }
     pp('$mm ......... _getAuthenticationStatus ....... setting state, authed = $authed ');
 
@@ -235,8 +187,17 @@ class DashboardState extends ConsumerState<Dashboard>
         user!.associationId!, startDate, refresh);
   }
 
-  Future<void> _navigateToAuth() async {
+  Future<void> _navigateToEmailAuth() async {
     var res = await navigateWithScale(const DamnEmailLink(), context);
+    pp('\n\n$mm ................ back from sign in: $res');
+    setState(() {
+      busy = false;
+    });
+    user = await prefs.getUser();
+    _getData();
+  }
+  Future<void> _navigateToPhoneAuth() async {
+    var res = await navigateWithScale( const CustomPhoneVerification(), context);
     pp('\n\n$mm ................ back from sign in: $res');
     setState(() {
       busy = false;
@@ -294,6 +255,17 @@ class DashboardState extends ConsumerState<Dashboard>
       passengers,
       countPassengers,
       ambassadorText;
+  String notRegistered =
+      'You are not registered yet. Please call your administrator';
+  String emailNotFound = 'emailNotFound';
+  String welcome = 'Welcome';
+  String firstTime =
+      'This is the first time that you have opened the app and you '
+      'need to sign in to your Taxi Association.';
+  String changeLanguage = 'Change Language or Color';
+  String startEmailLinkSignin = 'Start Email Link Sign In';
+  String signInWithPhone = 'Start Phone Sign In';
+
 
   Future _setTexts() async {
     dispatchWithScan =
@@ -318,11 +290,24 @@ class DashboardState extends ConsumerState<Dashboard>
         await translator.translate('countPassengers', colorAndLocale.locale);
     passengerCount =
         await translator.translate('passengerCount', colorAndLocale.locale);
+    emailNotFound =
+        await translator.translate('emailNotFound', colorAndLocale.locale);
+    notRegistered =
+        await translator.translate('notRegistered', colorAndLocale.locale);
+    firstTime = await translator.translate('firstTime', colorAndLocale.locale);
+    changeLanguage =
+        await translator.translate('changeLanguage', colorAndLocale.locale);
+    welcome = await translator.translate('welcome', colorAndLocale.locale);
+    startEmailLinkSignin = await translator.translate(
+        'signInWithEmail', colorAndLocale.locale);
+    signInWithPhone = await translator.translate(
+        'signInWithPhone', colorAndLocale.locale);
 
     setState(() {});
   }
 
   int daysForData = 1;
+
   Future _getRoutes() async {
     pp('$mm ... marshal dashboard; getting routes: ${routes.length} ...');
 
@@ -424,7 +409,7 @@ class DashboardState extends ConsumerState<Dashboard>
                 style: myTextStyleMediumLarge(context, 20),
               ),
               actions: [
-                IconButton(
+                user == null? const SizedBox() : IconButton(
                     onPressed: () {
                       _navigateToScanVehicleForMedia();
                     },
@@ -440,7 +425,7 @@ class DashboardState extends ConsumerState<Dashboard>
                       Icons.color_lens,
                       color: Theme.of(context).primaryColor,
                     )),
-                IconButton(
+                user == null? const SizedBox() : IconButton(
                     onPressed: () {
                       _navigateToScanDispatch();
                     },
@@ -452,214 +437,278 @@ class DashboardState extends ConsumerState<Dashboard>
             ),
             body: Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    shape: getRoundedBorder(radius: 16),
-                    elevation: 4,
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        Text(
-                          user == null
-                              ? 'Association Name'
-                              : user!.associationName!,
-                          style: myTextStyleMediumLargeWithColor(
-                              context, Theme.of(context).primaryColor, 18),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          user == null ? 'Ambassador Name' : user!.name,
-                          style: myTextStyleSmall(context),
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        SizedBox(
-                            width: 300,
-                            child: ElevatedButton.icon(
-                              icon: const Icon(Icons.people),
-                              style: ButtonStyle(
-                                  elevation:
-                                      const MaterialStatePropertyAll(8.0),
-                                  shape: MaterialStatePropertyAll(
-                                      getRoundedBorder(radius: 16))),
-                              onPressed: () {
-                                _navigateToCountPassengers();
-                              },
-                              label: Padding(
-                                padding: const EdgeInsets.all(28.0),
-                                child: Text(countPassengers == null
-                                    ? 'Count Passengers'
-                                    : countPassengers!),
-                              ),
-                            )),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                user == null
+                    ? Card(
+                      shape: getRoundedBorder(radius: 16),
+                      elevation: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
                           children: [
-                            Row(
-                              children: [
-                                DaysDropDown(
-                                    onDaysPicked: (days) {
-                                      daysForData = days;
-                                      setState(() {});
-                                      _getDispatches(true);
-                                    },
-                                    hint: days == null ? 'Days' : days!),
-                                const SizedBox(
-                                  width: 20,
+                            SizedBox(width: 40, height: 40,
+                                child: Image.asset('assets/gio.png', )),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Text(
+                              welcome,
+                              style: myTextStyleMediumLargeWithColor(
+                                  context,
+                                  Theme.of(context).primaryColorLight,
+                                  40),
+                            ),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            Text(
+                              firstTime,
+                              style: myTextStyleMedium(context),
+                            ),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            SizedBox(
+                              width: 300,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  elevation: const MaterialStatePropertyAll(4.0),
+                                  backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColorLight),
                                 ),
-                                Text(
-                                  '$daysForData',
-                                  style: myTextStyleMediumLargeWithColor(
-                                      context,
-                                      Theme.of(context).primaryColorLight,
-                                      24),
-                                )
-                              ],
+                                onPressed: () {
+                                  _navigateToColor();
+                                },
+                                // icon: const Icon(Icons.language),
+
+                                child: Text(changeLanguage, style: myTextStyleSmallBlack(context),),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 160,
+                            ),
+
+
+                            SizedBox(
+                              width: 340,
+                              child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    _navigateToPhoneAuth();
+                                  },
+                                  style: ButtonStyle(
+                                    elevation: const MaterialStatePropertyAll(8.0),
+                                    backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColor),
+                                  ),
+                                  label: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(signInWithPhone, style: myTextStyleSmallBlack(context),),
+                                  ),
+                                  icon: const Icon(Icons.phone)),
+                            ),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            Container(color: Theme.of(context).primaryColorLight, width: 160, height: 2,),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            SizedBox(
+                              width: 340,
+                              child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    _navigateToEmailAuth();
+                                  },
+                                  style: ButtonStyle(
+                                    elevation: const MaterialStatePropertyAll(8.0),
+                                    backgroundColor: MaterialStatePropertyAll(Theme.of(context).primaryColor),
+                                  ),
+                                  icon: const Icon(Icons.email),
+                                  label: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(startEmailLinkSignin, style: myTextStyleSmallBlack(context),),
+                                  )),
+                            ),
+                            const SizedBox(
+                              height: 24,
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        busy
-                            ? const Center(
-                                child: SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 6,
-                                    backgroundColor: Colors.white,
+                      ),
+                    )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          shape: getRoundedBorder(radius: 16),
+                          elevation: 4,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              Text(
+                                user == null
+                                    ? 'Association Name'
+                                    : user!.associationName!,
+                                style: myTextStyleMediumLargeWithColor(context,
+                                    Theme.of(context).primaryColor, 18),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                user == null ? 'Ambassador Name' : user!.name,
+                                style: myTextStyleSmall(context),
+                              ),
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              SizedBox(
+                                  width: 300,
+                                  child: ElevatedButton.icon(
+                                    icon: const Icon(Icons.people),
+                                    style: ButtonStyle(
+                                        elevation:
+                                            const MaterialStatePropertyAll(8.0),
+                                        shape: MaterialStatePropertyAll(
+                                            getRoundedBorder(radius: 16))),
+                                    onPressed: () {
+                                      _navigateToCountPassengers();
+                                    },
+                                    label: Padding(
+                                      padding: const EdgeInsets.all(28.0),
+                                      child: Text(countPassengers == null
+                                          ? 'Count Passengers'
+                                          : countPassengers!),
+                                    ),
+                                  )),
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      DaysDropDown(
+                                          onDaysPicked: (days) {
+                                            daysForData = days;
+                                            setState(() {});
+                                            _getDispatches(true);
+                                          },
+                                          hint: days == null ? 'Days' : days!),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text(
+                                        '$daysForData',
+                                        style: myTextStyleMediumLargeWithColor(
+                                            context,
+                                            Theme.of(context).primaryColorLight,
+                                            24),
+                                      )
+                                    ],
                                   ),
-                                ),
-                              )
-                            : Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: user == null
-                                      ? const SizedBox()
-                                      : GridView(
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisSpacing: 2,
-                                            mainAxisSpacing: 2,
-                                            crossAxisCount: 2,
-                                          ),
-                                          children: [
-                                            TotalWidget(
-                                                caption: passengerCount == null
-                                                    ? 'Passenger Counts'
-                                                    : passengerCount!,
-                                                number: passengerCounts.length,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: dispatchesText == null
-                                                    ? 'Dispatches'
-                                                    : dispatchesText!,
-                                                number: dispatchRecords.length,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: passengers == null
-                                                    ? 'Passengers'
-                                                    : passengers!,
-                                                number: totalPassengers,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: vehiclesText == null
-                                                    ? 'Vehicles'
-                                                    : vehiclesText!,
-                                                number: cars.length,
-                                                color: Colors.grey.shade600,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: routesText == null
-                                                    ? 'Routes'
-                                                    : routesText!,
-                                                number: routes.length,
-                                                color: Colors.grey.shade600,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: landmarksText == null
-                                                    ? 'Landmarks'
-                                                    : landmarksText!,
-                                                number: routeLandmarks.length,
-                                                color: Colors.grey.shade600,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                          ],
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              busy
+                                  ? const Center(
+                                      child: SizedBox(
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 6,
+                                          backgroundColor: Colors.white,
                                         ),
-                                ),
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
-                user == null
-                    ? Positioned(
-                        left: 24,
-                        right: 24,
-                        top: 40,
-                        bottom: 100,
-                        child: Center(
-                          child: Card(
-                            shape: getRoundedBorder(radius: 16),
-                            elevation: 8,
-                            child: SizedBox(
-                              height: 400,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 64,
+                                      ),
+                                    )
+                                  : Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: user == null
+                                            ? const SizedBox()
+                                            : GridView(
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisSpacing: 2,
+                                                  mainAxisSpacing: 2,
+                                                  crossAxisCount: 2,
+                                                ),
+                                                children: [
+                                                  TotalWidget(
+                                                      caption: passengerCount ==
+                                                              null
+                                                          ? 'Passenger Counts'
+                                                          : passengerCount!,
+                                                      number: passengerCounts
+                                                          .length,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 32,
+                                                      onTapped: () {}),
+                                                  TotalWidget(
+                                                      caption:
+                                                          dispatchesText == null
+                                                              ? 'Dispatches'
+                                                              : dispatchesText!,
+                                                      number: dispatchRecords
+                                                          .length,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 32,
+                                                      onTapped: () {}),
+                                                  TotalWidget(
+                                                      caption:
+                                                          passengers == null
+                                                              ? 'Passengers'
+                                                              : passengers!,
+                                                      number: totalPassengers,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 32,
+                                                      onTapped: () {}),
+                                                  TotalWidget(
+                                                      caption:
+                                                          vehiclesText == null
+                                                              ? 'Vehicles'
+                                                              : vehiclesText!,
+                                                      number: cars.length,
+                                                      color:
+                                                          Colors.grey.shade600,
+                                                      fontSize: 32,
+                                                      onTapped: () {}),
+                                                  TotalWidget(
+                                                      caption:
+                                                          routesText == null
+                                                              ? 'Routes'
+                                                              : routesText!,
+                                                      number: routes.length,
+                                                      color:
+                                                          Colors.grey.shade600,
+                                                      fontSize: 32,
+                                                      onTapped: () {}),
+                                                  TotalWidget(
+                                                      caption:
+                                                          landmarksText == null
+                                                              ? 'Landmarks'
+                                                              : landmarksText!,
+                                                      number:
+                                                          routeLandmarks.length,
+                                                      color:
+                                                          Colors.grey.shade600,
+                                                      fontSize: 32,
+                                                      onTapped: () {}),
+                                                ],
+                                              ),
+                                      ),
                                     ),
-                                    Text(
-                                      'Welcome!',
-                                      style: myTextStyleLarge(context),
-                                    ),
-                                    const SizedBox(
-                                      height: 32,
-                                    ),
-                                    const Text(
-                                        'Welcome! This is the first time that you have opened the app and you '
-                                        'need to sign in to your Taxi Association or other organization.'),
-                                    const SizedBox(
-                                      height: 64,
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          _navigateToAuth();
-                                        },
-                                        child: const Text('Start Sign In')),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            ],
                           ),
-                        ))
-                    : const SizedBox()
+                        ),
+                      ),
               ],
             )));
   }
@@ -720,6 +769,7 @@ class NumberAndCaption extends StatelessWidget {
   final int number;
   final Color color;
   final double fontSize;
+
   @override
   Widget build(BuildContext context) {
     final fmt = NumberFormat.decimalPattern();
