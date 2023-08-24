@@ -4,8 +4,6 @@
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 L
-kasie_transie_ambassador.iml,d/0/d066fa2b20f26ead3eaf21c048748ffbd6543331
-L
 .idea/libraries/Dart_SDK.xml,a/9/a9cc79449f536988c9a3fd2c84e3dfda3be04f09
 U
 %.idea/libraries/KotlinJavaRuntime.xml,0/2/02ddf5725f2ec9b67991423205d2b1a2009ccd06
@@ -58,8 +56,6 @@ R
 "ios/Flutter/AppFrameworkInfo.plist,d/c/dcf6bab66022807af0d3467afc4bc1c2594538c4
 U
 %macos/Runner/Configs/AppInfo.xcconfig,7/5/75e3aec2f7b1dab9d57d4f4ae57cc2929646c452
-D
-android/build.gradle,1/3/13f012f60e18f38225ce59137db2e07d5d70b29c
 L
 linux/flutter/CMakeLists.txt,f/8/f871e65f12c98cc1c448b643b9882b86da7e0399
 D
@@ -192,9 +188,17 @@ M
 Rios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings,d/e/dec276cb6c82fdeae325108bd526a78dcab4ee15
 p
 @ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings,e/e/ee07b9792b3a42aff7f72cdd193871e00fdd9be4
+?
+public/404.html,9/1/9165de4c08ed7f75a6e91e356e892f20aa817eb8
+H
+android/app/build.gradle,5/9/594ba479000e0bb5513707b709ad1cd52da9063a
+A
+public/index.html,f/4/f43ecdf8d666ee908aacce037b4cd72159e4741b
+R
+"lib/services/utils/info_alert.dart,d/0/d09dad4dffcb926b24d1d78c43e39bd9bec829cf
+R
+"lib/services/utils/app_loader.dart,8/2/82cb0e772d635121374bad1129fe94ae97499cf1
+L
+kasie_transie_ambassador.iml,d/0/d066fa2b20f26ead3eaf21c048748ffbd6543331
 ^
 .android/app/src/main/res/drawable/app_icon.xml,4/1/41be73f05525cc44d6c6cf9f8c491ad0a1dae296
-I
-lib/generated/assets.dart,5/b/5b815209f3ac1d4b94a4211dbfb903428d4ed1c2
-B
-assets/intl_en.arb,9/1/9119b1dcb10f1597aedefbf6d7588e2cc0924485

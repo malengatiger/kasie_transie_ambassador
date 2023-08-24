@@ -3,13 +3,13 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audioplayers_windows
   desktop_webview_auth
   file_selector_windows
   firebase_core
   geolocator_windows
   permission_handler_windows
   realm
+  smart_auth
   url_launcher_windows
 )
 

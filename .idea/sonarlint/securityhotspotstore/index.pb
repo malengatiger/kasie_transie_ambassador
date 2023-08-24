@@ -3,8 +3,6 @@
 .env,3/c/3c84dcdc6bbe3d7817c49dcdc327b926fea1808a
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-L
-kasie_transie_ambassador.iml,d/0/d066fa2b20f26ead3eaf21c048748ffbd6543331
 ;
 ios/Podfile,5/1/510807778b56990ed3829592aea48d7a35b42809
 L
@@ -29,8 +27,6 @@ G
 assets/files/people.csv,0/0/00d79e0e826397b2e114a1189d6848b9dda3fd65
 \
 ,android/kasie_transie_ambassador_android.iml,5/b/5b8adc17579cdba8d4099269b5ee13abed40585a
-B
-assets/intl_en.arb,9/1/9119b1dcb10f1597aedefbf6d7588e2cc0924485
 g
 7android/app/src/main/res/drawable/launch_background.xml,4/f/4f91961a546778a75084e94be754a7bc763e7fa4
 S
@@ -55,8 +51,6 @@ k
 ;ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json,3/e/3e3e9759be97e7378894796c4a8974ecdd7dacfd
 }
 Mandroid/app/src/main/kotlin/com/boha/kasie_transie_ambassador/MainActivity.kt,7/0/7020ebdc20150c38badcb3b8a33c7c5d013e73f7
-^
-.android/app/src/main/res/drawable/app_icon.xml,4/1/41be73f05525cc44d6c6cf9f8c491ad0a1dae296
 J
 ios/Flutter/Debug.xcconfig,0/0/000e7013d35dd014f463168b55b75a1c98b25bb8
 L
@@ -186,8 +180,6 @@ I
 android/gradle.properties,7/f/7f1dfe9671149f8d9c88462c92762aed23bf28d2
 B
 android/.gitignore,f/1/f147f918c47edab19f40093aee6e93ae28629e1c
-D
-android/build.gradle,1/3/13f012f60e18f38225ce59137db2e07d5d70b29c
 F
 windows/CMakeLists.txt,3/a/3a6f76713657298f4e1772f82b70f7e415125c2e
 G
@@ -196,5 +188,17 @@ B
 windows/.gitignore,2/4/24dabf03f9198efd7a0549040dcea33c8059f328
 Z
 *android/app/src/main/res/values/styles.xml,6/8/681a41214f7344c6c8adc00743d2c199eb204fde
-I
-lib/generated/assets.dart,5/b/5b815209f3ac1d4b94a4211dbfb903428d4ed1c2
+R
+"lib/services/utils/info_alert.dart,d/0/d09dad4dffcb926b24d1d78c43e39bd9bec829cf
+H
+android/app/build.gradle,5/9/594ba479000e0bb5513707b709ad1cd52da9063a
+?
+public/404.html,9/1/9165de4c08ed7f75a6e91e356e892f20aa817eb8
+A
+public/index.html,f/4/f43ecdf8d666ee908aacce037b4cd72159e4741b
+R
+"lib/services/utils/app_loader.dart,8/2/82cb0e772d635121374bad1129fe94ae97499cf1
+L
+kasie_transie_ambassador.iml,d/0/d066fa2b20f26ead3eaf21c048748ffbd6543331
+^
+.android/app/src/main/res/drawable/app_icon.xml,4/1/41be73f05525cc44d6c6cf9f8c491ad0a1dae296

@@ -22,50 +22,16 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.0.2 <4.0.0'
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   kasie_transie_library:
     path: ../kasie_transie_library
   cupertino_icons: ^1.0.5
   flutter_local_notifications: ^15.1.0+1
-  firebase_auth: ^4.6.3
-  firebase_messaging: ^14.6.3
-  firebase_core: ^2.14.0
-  firebase_storage: ^11.2.3
   animated_splash_screen: ^1.3.0
-  font_awesome_flutter: ^10.4.0
-  google_maps_flutter: ^2.3.0
-  page_transition: ^2.0.9
-  responsive_builder: ^0.7.0
-  flutter_riverpod: ^2.3.6
-  pretty_json: ^2.0.0
-  geolocator: ^9.0.2
-  focused_menu: ^1.0.5
-  firebase_ui_auth: ^1.6.0
-  intl: ^0.18.0
-  workmanager: ^0.5.1
-
-  flutter_polyline_points:
-  dots_indicator: ^3.0.0
-  realm:
-  uuid: ^3.0.7
-  flutter_dotenv: ^5.1.0
-  firebase_dynamic_links: ^5.3.4
-  get: ^4.6.5
-  flutter_easyloading: ^3.0.5
-  url_launcher:
-#  background_location: ^0.8.1
+  font_awesome_flutter: ^10.5.0
 
 
 dev_dependencies:

@@ -1,7 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:firebase_core/firebase_core.dart' as fb;
@@ -11,14 +9,11 @@ import 'package:kasie_transie_library/bloc/theme_bloc.dart';
 import 'package:kasie_transie_library/data/schemas.dart' as lib;
 import 'package:kasie_transie_library/isolates/dispatch_isolate.dart';
 import 'package:kasie_transie_library/isolates/heartbeat_isolate.dart';
-import 'package:kasie_transie_library/messaging/heartbeat.dart';
 import 'package:kasie_transie_library/utils/emojis.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
-import 'package:kasie_transie_library/widgets/auth/damn_email_link.dart';
 import 'package:kasie_transie_library/widgets/splash_page.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'firebase_options.dart';
 
@@ -52,33 +47,12 @@ Future<void> main() async {
     androidPackageName: 'com.boha.kasie_transie_ambassador',
     // iOSBundleId: 'com.boha.kasieTransieOwner',
   );
-  await initializeEmailLinkProvider(action);
-  FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
-    final Uri deepLink = dynamicLinkData.link;
-    bool foo = FirebaseAuth.instance.isSignInWithEmailLink(deepLink.toString());
-    pp('...... deepLink is email link? $foo');
-    pp(dynamicLinkData.asMap());
-    // if (FirebaseAuth.instance.isSignInWithEmailLink(dynamicLinkData.link.toString())) {
-    //   try {
-    //     // The client SDK will parse the code from the link for you.
-    //     final userCredential = await FirebaseAuth.instance
-    //         .signInWithEmailLink(email: emailAuth, emailLink: emailLink);
-    //
-    //     // You can access the new user via userCredential.user.
-    //     final emailAddress = userCredential.user?.email;
-    //
-    //     pp('Successfully signed in with email link!');
-    //   } catch (error) {
-    //     pp('Error signing in with email link.');
-    //   }
-    // }
-
-  });
-  Workmanager().initialize(
-      callbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode:
-          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-      );
+  // await initializeEmailLinkProvider(action);
+  // Workmanager().initialize(
+  //     callbackDispatcher, // The top level function, aka callbackDispatcher
+  //     isInDebugMode:
+  //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  //     );
 
   runApp(const ProviderScope(child: AmbassadorApp()));
 }
@@ -107,14 +81,7 @@ class AmbassadorApp extends StatelessWidget {
             theme: themeBloc.getTheme(themeIndex).lightTheme,
             darkTheme: themeBloc.getTheme(themeIndex).darkTheme,
             themeMode: ThemeMode.system,
-            // initialRoute: '/dashboard',
-            // routes: {
-            //     '/login': (context) {
-            //       return const SigninWithLink();
-            //     },
-            //     '/dashboard': (context) => const Dashboard(),
-            //   },
-            // home:  const Dashboard(),
+
             home: AnimatedSplashScreen(
               splash: const SplashWidget(),
               animationDuration: const Duration(milliseconds: 2000),
