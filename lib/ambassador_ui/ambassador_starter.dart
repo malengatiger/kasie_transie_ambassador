@@ -181,20 +181,27 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
           route == null
               ? gapW32
               : Positioned(
-                  bottom: 8,
+                  bottom: 2,
                   right: 24,
                   child: SizedBox(
-                      height: 100,
+                      height: 140,
                       child: Column(
                         children: [
-                          Text('${route!.name}',
-                              style: myTextStyle(color: Colors.grey)),
+                          TextButton(
+                            onPressed: () {
+                              route = prefs.getRoute();
+                              setState(() {});
+                            },
+                            child: Text('${route!.name}',
+                                style: myTextStyle(color: Colors.grey)),
+                          ),
                           gapH8,
                           TextButton(
                             onPressed: () {
                               _navigateToCarSearch(route!);
                             },
-                            child:  Text('Use Previous Route', style: myTextStyle(fontSize: 20)),
+                            child: Text('Use Previous Route',
+                                style: myTextStyle(fontSize: 20)),
                           ),
                         ],
                       ))),
