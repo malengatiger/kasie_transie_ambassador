@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -53,10 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCpxDuMIZrx55W6YuU6TY0v7T3Ar-Mg-Eo',
-    appId: '1:79998394043:android:0bf7298da2eeac90d6139e',
-    messagingSenderId: '79998394043',
-    projectId: 'thermal-effort-366015',
-    storageBucket: 'thermal-effort-366015.appspot.com',
+    apiKey: 'AIzaSyB3finIgPi481q3-GaEDjOLcoPbs664gTs',
+    appId: '1:854189510560:android:310457d2660e50a636dec5',
+    messagingSenderId: '854189510560',
+    projectId: 'kasie-transie-3',
+    storageBucket: 'kasie-transie-3.appspot.com',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDcAXlT6hoou41oEgIbjRTCagAJzBTsZIM',
+    appId: '1:854189510560:web:4e6e9f73ae347af536dec5',
+    messagingSenderId: '854189510560',
+    projectId: 'kasie-transie-3',
+    authDomain: 'kasie-transie-3.firebaseapp.com',
+    storageBucket: 'kasie-transie-3.appspot.com',
+    measurementId: 'G-BQW5ZWEKB4',
+  );
+
 }

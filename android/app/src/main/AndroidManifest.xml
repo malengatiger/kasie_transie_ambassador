@@ -1,11 +1,17 @@
 <manifest xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera"/>
     <application
         android:label="Ambassador"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="AIzaSyAppCGKY2IfL3R1lSyoUKXrdU7yUj5weMc"/>
 
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                   android:value="AIzaSyD9Lx_JbgcWFeik-Z85AC49oJOMyuF_H5g"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -2,40 +2,41 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kasie_transie_library/bloc/dispatch_helper.dart';
+import 'package:kasie_transie_library/auth/email_auth_signin.dart';
+import 'package:kasie_transie_library/auth/phone_auth_signin2.dart';
 import 'package:kasie_transie_library/bloc/list_api_dog.dart';
+
 import 'package:kasie_transie_library/data/color_and_locale.dart';
-import 'package:kasie_transie_library/data/schemas.dart' as lib;
+import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
+import 'package:kasie_transie_library/data/route_data.dart';
 import 'package:kasie_transie_library/l10n/translation_handler.dart';
 import 'package:kasie_transie_library/maps/association_route_maps.dart';
 import 'package:kasie_transie_library/messaging/fcm_bloc.dart';
-import 'package:kasie_transie_library/providers/kasie_providers.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/navigator_utils.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
 import 'package:kasie_transie_library/utils/user_utils.dart';
-import 'package:kasie_transie_library/widgets/auth/cell_auth_signin.dart';
 import 'package:kasie_transie_library/widgets/dash_widgets/generic.dart';
 import 'package:kasie_transie_library/widgets/days_drop_down.dart';
-import 'package:kasie_transie_library/widgets/scanners/dispatch_via_scan.dart';
+import 'package:kasie_transie_library/widgets/scanners/dispatch_helper.dart';
 import 'package:kasie_transie_library/widgets/language_and_color_chooser.dart';
 import 'package:kasie_transie_library/widgets/scanners/scan_vehicle_for_counts.dart';
 import 'package:kasie_transie_library/widgets/scanners/scan_vehicle_for_media.dart';
+import 'package:kasie_transie_library/widgets/vehicle_widgets/routes_for_dispatch.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:get_it/get_it.dart';
 
-
-class Dashboard extends ConsumerStatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+class AmbassadorDashboard extends StatefulWidget {
+  const AmbassadorDashboard({super.key});
 
   @override
-  ConsumerState createState() => DashboardState();
+  AmbassadorDashboardState createState() => AmbassadorDashboardState();
 }
 
-class DashboardState extends ConsumerState<Dashboard>
+class AmbassadorDashboardState extends State<AmbassadorDashboard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  static const mm = '😡😡😡😡Ambassador Dashboard: 💪 ';
+  static const mm = '😡😡😡😡AmbassadorDashboard: 💪 ';
 
   lib.User? user;
   var cars = <lib.Vehicle>[];
@@ -50,6 +51,8 @@ class DashboardState extends ConsumerState<Dashboard>
   late StreamSubscription<lib.DispatchRecord> _dispatchStreamSubscription;
   late StreamSubscription<lib.VehicleMediaRequest> _mediaRequestSubscription;
   late StreamSubscription<lib.RouteUpdateRequest> _routeUpdateSubscription;
+  ListApiDog listApiDog = GetIt.instance<ListApiDog>();
+  Prefs prefs = GetIt.instance<Prefs>();
 
   String? dispatchWithScan,
       manualDispatch,
@@ -79,7 +82,7 @@ class DashboardState extends ConsumerState<Dashboard>
     super.initState();
     _listen();
     _setTexts();
-    _getAuthenticationStatus();
+    // _getAuthenticationStatus();
   }
 
   void _listen() async {
@@ -94,11 +97,11 @@ class DashboardState extends ConsumerState<Dashboard>
     //
     _mediaRequestSubscription =
         fcmBloc.vehicleMediaRequestStream.listen((event) {
-      pp('$mm fcmBloc.vehicleMediaRequestStream delivered ${event.vehicleReg}');
-      if (mounted) {
-        _confirmNavigationToPhotos(event);
-      }
-    });
+          pp('$mm fcmBloc.vehicleMediaRequestStream delivered ${event.vehicleReg}');
+          if (mounted) {
+            _confirmNavigationToPhotos(event);
+          }
+        });
     //
     _routeUpdateSubscription = fcmBloc.routeUpdateRequestStream.listen((event) {
       pp('$mm fcmBloc.routeUpdateRequestStream delivered: ${event.routeName}');
@@ -106,25 +109,25 @@ class DashboardState extends ConsumerState<Dashboard>
     });
   }
 
-  void _getAuthenticationStatus() async {
-    pp('\n\n$mm _getAuthenticationStatus ....... '
-        'check both Firebase user and Kasie user');
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    authed = await checkEmail(firebaseUser);
-    if (authed) {
-      pp('\n\n$mm _getAuthenticationStatus ....... authed: $authed');
-      _getData();
-      return;
-    }
-    authed = await checkUser(firebaseUser);
-    if (authed) {
-      pp('\n\n$mm _getAuthenticationStatus ....... authed: $authed');
-      _getData();
-      return;
-    }
-    pp('$mm ......... _getAuthenticationStatus ....... setting state, authed = $authed ');
-    _navigateToPhoneAuth();
-  }
+  // void _getAuthenticationStatus() async {
+  //   pp('\n\n$mm _getAuthenticationStatus ....... '
+  //       'check both Firebase user and Kasie user');
+  //   var firebaseUser = FirebaseAuth.instance.currentUser;
+  //   authed = await checkEmail(firebaseUser);
+  //   if (authed) {
+  //     pp('\n\n$mm _getAuthenticationStatus ....... authed: $authed');
+  //     _getData(false);
+  //     return;
+  //   }
+  //   authed = await checkUser(firebaseUser);
+  //   if (authed) {
+  //     pp('\n\n$mm _getAuthenticationStatus ....... authed: $authed');
+  //     _getData(true);
+  //     return;
+  //   }
+  //   pp('$mm ......... _getAuthenticationStatus ....... setting state, authed = $authed ');
+  //   _navigateToEmailAuth();
+  // }
 
   void _aggregatePassengers() {
     totalPassengers = 0;
@@ -145,7 +148,7 @@ class DashboardState extends ConsumerState<Dashboard>
               children: [
                 const Text(
                     'You have been requested to take pictures and or video of the vehicle.\n'
-                    'Please tap YES to start the photos or do that at the earliest opportunity.'),
+                        'Please tap YES to start the photos or do that at the earliest opportunity.'),
                 const SizedBox(
                   height: 48,
                 ),
@@ -203,18 +206,18 @@ class DashboardState extends ConsumerState<Dashboard>
 
   void _navigateToScanVehicleForMedia() {
     pp('$mm navigate to ScanVehicleForMedia ...  ');
-    navigateWithScale(const ScanVehicleForMedia(), context);
+    NavigationUtils.navigateTo(context: context, widget: ScanVehicleForMedia(), );
   }
 
-  Future _getData() async {
+  Future _getData(bool refresh) async {
     pp('$mm ................... get data for ambassador dashboard ...');
-    user = await prefs.getUser();
+    user = prefs.getUser();
     setState(() {
       busy = true;
     });
     try {
       if (user != null) {
-        await _getRoutes();
+        await _getRoutes(refresh);
         await _getLandmarks();
         await _getCars();
         await _getDispatches(false);
@@ -227,7 +230,6 @@ class DashboardState extends ConsumerState<Dashboard>
         showSnackBar(
             padding: 16, message: 'Error getting data', context: context);
       }
-      ;
     }
     //
     if (mounted) {
@@ -238,62 +240,69 @@ class DashboardState extends ConsumerState<Dashboard>
   }
 
   Future _setTexts() async {
-    colorAndLocale = await prefs.getColorAndLocale();
+    colorAndLocale = prefs.getColorAndLocale();
     final loc = colorAndLocale.locale;
     dispatchWithScan =
-        await translator.translate('dispatchWithScan', loc);
+    await translator.translate('dispatchWithScan', loc);
     manualDispatch =
-        await translator.translate('manualDispatch', loc);
+    await translator.translate('manualDispatch', loc);
     vehiclesText =
-        await translator.translate('vehicles', loc);
+    await translator.translate('vehicles', loc);
 
     routesText = await translator.translate('routes', loc);
     landmarksText =
-        await translator.translate('landmarks', loc);
+    await translator.translate('landmarks', loc);
     dispatchesText =
-        await translator.translate('dispatches', loc);
+    await translator.translate('dispatches', loc);
 
     passengers =
-        await translator.translate('passengers', loc);
+    await translator.translate('passengers', loc);
     days = await translator.translate('days', loc);
     ambassadorText =
-        await translator.translate('ambassador', loc);
+    await translator.translate('ambassador', loc);
     countPassengers =
-        await translator.translate('countPassengers', loc);
+    await translator.translate('countPassengers', loc);
     passengerCount =
-        await translator.translate('passengerCount', loc);
+    await translator.translate('passengerCount', loc);
     emailNotFound =
-        await translator.translate('emailNotFound', loc);
+    await translator.translate('emailNotFound', loc);
     notRegistered =
-        await translator.translate('notRegistered', loc);
+    await translator.translate('notRegistered', loc);
     firstTime = await translator.translate('firstTime', loc);
     changeLanguage =
-        await translator.translate('changeLanguage', loc);
+    await translator.translate('changeLanguage', loc);
     welcome = await translator.translate('welcome', loc);
     startEmailLinkSignin =
-        await translator.translate('signInWithEmail', loc);
+    await translator.translate('signInWithEmail', loc);
     signInWithPhone =
-        await translator.translate('signInWithPhone', loc);
+    await translator.translate('signInWithPhone', loc);
     setState(() {
 
     });
   }
 
   int daysForData = 7;
+  AssociationRouteData? routeData;
 
-  Future _getRoutes() async {
-    pp('$mm ... ambassador dashboard; getting routes: ${routes.length} ...');
+  Future _getRoutes(bool refresh) async {
+    pp('$mm ... getting routes: ${routes.length} ...');
 
-    routes = await listApiDog
-        .getRoutes(AssociationParameter(user!.associationId!, false));
+    routeData = await listApiDog.getAssociationRouteData(user!.associationId!, refresh);
+    if (routeData != null) {
+      for (var rd in routeData!.routeDataList) {
+        if (rd.routePoints.isNotEmpty) {
+          routes.add(rd.route!);
+        }
+      }
+    }
     pp('$mm ... ambassador dashboard; routes: ${routes.length} ...');
   }
 
   Future _getCars() async {
     pp('$mm ... ambassador dashboard; getting cars: ${cars.length} ...');
 
-    cars = await listApiDog.getAssociationVehicles(user!.associationId!, false);
-    pp('$mm ... ambassador dashboard; cars: ${cars.length} ...');
+    cars = await listApiDog.getAssociationCars(user!.associationId!, false);
+    pp('$mm ...  cars: ${cars.length} ...');
   }
 
   var passengerCounts = <lib.AmbassadorPassengerCount>[];
@@ -344,34 +353,51 @@ class DashboardState extends ConsumerState<Dashboard>
   void _navigateToScanDispatch() async {
     pp('$mm _navigateToScanDispatch ......');
 
-    navigateWithScale(const DispatchViaScan(), context);
+    NavigationUtils.navigateTo(context: context, widget: RoutesForDispatch(), );
+
   }
 
   void _navigateToCountPassengers() async {
     pp('$mm ... _navigateToCountPassengers ...');
-    navigateWithScale(const ScanVehicleForCounts(), context);
-  }
+    NavigationUtils.navigateTo(context: context, widget: ScanVehicleForCounts(), );
 
+  }
+  void _navigateToEmailAuth() async {
+    pp('$mm ... _navigateToEmailAuth ...');
+
+    NavigationUtils.navigateTo(context: context, widget: EmailAuthSignin(onGoodSignIn: (){}, onSignInError: (){}), );
+
+    if (user != null) {
+      pp('$mm ... back from _navigateToPhoneAuth with user: ${user!.name} ...');
+      _getData(true);
+    }
+  }
   void _navigateToPhoneAuth() async {
     pp('$mm ... _navigateToPhoneAuth ...');
-   user = await navigateWithScale(CustomPhoneVerification(onUserAuthenticated: (u){},
-        onError: (){}, onCancel: (){}, onLanguageChosen: (){}), context);
-   if (user != null) {
-     pp('$mm ... back from _navigateToPhoneAuth with user: ${user!.name} ...');
-    _getData();
-   }
+
+    NavigationUtils.navigateTo(context: context, widget: PhoneAuthSignin(onGoodSignIn: (){}, onSignInError: (){}), );
+
+    if (user != null) {
+      pp('$mm ... back from _navigateToPhoneAuth with user: ${user!.name} ...');
+      _getData(true);
+    }
   }
 
   Future _navigateToColor() async {
     pp('$mm _navigateToColor ......');
-    await navigateWithScale( LanguageAndColorChooser(onLanguageChosen: (){
+      NavigationUtils.navigateTo(context: context, widget: LanguageAndColorChooser(onLanguageChosen: () async {
+        colorAndLocale = prefs.getColorAndLocale();
+        await _setTexts();
+        setState(() {
 
-    },), context);
-    colorAndLocale = await prefs.getColorAndLocale();
-    await _setTexts();
+        });
+      },), );
+
+
   }
   void _navigateToMap() {
-    navigateWithScale(const AssociationRouteMaps(), context);
+    NavigationUtils.navigateTo(context: context, widget: AssociationRouteMaps(), );
+
   }
   @override
   Widget build(BuildContext context) {
@@ -387,13 +413,13 @@ class DashboardState extends ConsumerState<Dashboard>
                 user == null
                     ? const SizedBox()
                     : IconButton(
-                        onPressed: () {
-                          _navigateToScanVehicleForMedia();
-                        },
-                        icon: Icon(
-                          Icons.camera_alt,
-                          color: Theme.of(context).primaryColor,
-                        )),
+                    onPressed: () {
+                      _navigateToScanVehicleForMedia();
+                    },
+                    icon: Icon(
+                      Icons.camera_alt,
+                      color: Theme.of(context).primaryColor,
+                    )),
                 IconButton(
                     onPressed: () {
                       _navigateToMap();
@@ -413,13 +439,13 @@ class DashboardState extends ConsumerState<Dashboard>
                 user == null
                     ? const SizedBox()
                     : IconButton(
-                        onPressed: () {
-                          _navigateToScanDispatch();
-                        },
-                        icon: Icon(
-                          Icons.airport_shuttle,
-                          color: Theme.of(context).primaryColor,
-                        )),
+                    onPressed: () {
+                      _navigateToScanDispatch();
+                    },
+                    icon: Icon(
+                      Icons.airport_shuttle,
+                      color: Theme.of(context).primaryColor,
+                    )),
               ],
             ),
             body: Stack(
@@ -431,7 +457,7 @@ class DashboardState extends ConsumerState<Dashboard>
                     elevation: 4,
                     child: Column(
                       children: [
-                       gapH32,
+                        gapH32,
                         Text(
                           user == null
                               ? 'Association Name'
@@ -439,21 +465,18 @@ class DashboardState extends ConsumerState<Dashboard>
                           style: myTextStyleMediumLargeWithColor(
                               context, Theme.of(context).primaryColor, 18),
                         ),
-                       gapH8,
+                        gapH8,
                         Text(
                           user == null ? 'Ambassador Name' : user!.name,
                           style: myTextStyleSmall(context),
                         ),
-                       gapH16,
+                        gapH16,
                         SizedBox(
                             width: 300,
                             child: ElevatedButton.icon(
                               icon: const Icon(Icons.people),
                               style: ButtonStyle(
-                                  elevation:
-                                      const MaterialStatePropertyAll(8.0),
-                                  shape: MaterialStatePropertyAll(
-                                      getRoundedBorder(radius: 16))),
+                                  elevation: WidgetStatePropertyAll(8)),
                               onPressed: () {
                                 _navigateToCountPassengers();
                               },
@@ -494,83 +517,75 @@ class DashboardState extends ConsumerState<Dashboard>
                         gapH8,
                         busy
                             ? const Center(
-                                child: SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 6,
-                                    backgroundColor: Colors.white,
-                                  ),
-                                ),
-                              )
+                          child: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 6,
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        )
                             : Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: user == null
-                                      ? const SizedBox()
-                                      : GridView(
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisSpacing: 2,
-                                            mainAxisSpacing: 2,
-                                            crossAxisCount: 2,
-                                          ),
-                                          children: [
-                                            TotalWidget(
-                                                caption: passengerCount == null
-                                                    ? 'Passenger Counts'
-                                                    : passengerCount!,
-                                                number: passengerCounts.length,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: dispatchesText == null
-                                                    ? 'Dispatches'
-                                                    : dispatchesText!,
-                                                number: dispatchRecords.length,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: passengers == null
-                                                    ? 'Passengers'
-                                                    : passengers!,
-                                                number: totalPassengers,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: vehiclesText == null
-                                                    ? 'Vehicles'
-                                                    : vehiclesText!,
-                                                number: cars.length,
-                                                color: Colors.grey.shade600,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: routesText == null
-                                                    ? 'Routes'
-                                                    : routesText!,
-                                                number: routes.length,
-                                                color: Colors.grey.shade600,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                            TotalWidget(
-                                                caption: landmarksText == null
-                                                    ? 'Landmarks'
-                                                    : landmarksText!,
-                                                number: routeLandmarks.length,
-                                                color: Colors.grey.shade600,
-                                                fontSize: 32,
-                                                onTapped: () {}),
-                                          ],
-                                        ),
-                                ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: user == null
+                                ? const SizedBox()
+                                : GridView(
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisSpacing: 2,
+                                mainAxisSpacing: 2,
+                                crossAxisCount: 2,
                               ),
+                              children: [
+                                TotalWidget(
+                                    caption: passengerCount == null
+                                        ? 'Passenger Counts'
+                                        : passengerCount!,
+                                    number: passengerCounts.length,
+                                    fontSize: 32,
+                                    onTapped: () {}),
+                                TotalWidget(
+                                    caption: dispatchesText == null
+                                        ? 'Dispatches'
+                                        : dispatchesText!,
+                                    number: dispatchRecords.length,
+
+                                    fontSize: 32,
+                                    onTapped: () {}),
+                                TotalWidget(
+                                    caption: passengers == null
+                                        ? 'Passengers'
+                                        : passengers!,
+                                    number: totalPassengers,
+                                    fontSize: 32,
+                                    onTapped: () {}),
+                                TotalWidget(
+                                    caption: vehiclesText == null
+                                        ? 'Vehicles'
+                                        : vehiclesText!,
+                                    number: cars.length,
+                                    fontSize: 32,
+                                    onTapped: () {}),
+                                TotalWidget(
+                                    caption: routesText == null
+                                        ? 'Routes'
+                                        : routesText!,
+                                    number: routes.length,
+                                    fontSize: 32,
+                                    onTapped: () {}),
+                                TotalWidget(
+                                    caption: landmarksText == null
+                                        ? 'Landmarks'
+                                        : landmarksText!,
+                                    number: routeLandmarks.length,
+                                    fontSize: 32,
+                                    onTapped: () {}),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
