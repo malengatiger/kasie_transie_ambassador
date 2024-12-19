@@ -359,7 +359,7 @@ class AmbassadorDashboardState extends State<AmbassadorDashboard>
 
   void _navigateToCountPassengers() async {
     pp('$mm ... _navigateToCountPassengers ...');
-    NavigationUtils.navigateTo(context: context, widget: ScanVehicleForCounts(), );
+    // NavigationUtils.navigateTo(context: context, widget: ScanVehicleForCounts(trip: null,), );
 
   }
   void _navigateToEmailAuth() async {

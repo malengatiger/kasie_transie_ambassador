@@ -150,9 +150,10 @@ class KasieIntroState extends State<KasieIntro>
 
       if (user!.userType! == Constants.AMBASSADOR) {
         pp('$mm navigate to AmbassadorDashboard ...');
+        var ass = prefs.getAssociation();
         NavigationUtils.navigateTo(
             context: context,
-            widget: AmbassadorStarter(associationId: user!.associationId!,),
+            widget: AmbassadorStarter(association: ass!,),
             );
       }
     }

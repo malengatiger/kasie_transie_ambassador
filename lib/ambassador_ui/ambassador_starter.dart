@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kasie_transie_library/bloc/data_api_dog.dart';
 import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
+import 'package:kasie_transie_library/utils/device_location_bloc.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/navigator_utils.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
 import 'package:kasie_transie_library/widgets/ambassador/cars_for_ambassador.dart';
 import 'package:kasie_transie_library/widgets/ambassador/routes_for_ambassador.dart';
 import 'package:kasie_transie_library/widgets/vehicle_passenger_count.dart';
+import 'package:uuid/uuid.dart';
 
 class AmbassadorStarter extends StatefulWidget {
-  const AmbassadorStarter({super.key, required this.associationId});
+  const AmbassadorStarter({super.key, required this.association});
 
-  final String associationId;
+  final lib.Association association;
 
   @override
   AmbassadorStarterState createState() => AmbassadorStarterState();
@@ -25,6 +28,8 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
   Prefs prefs = GetIt.instance<Prefs>();
   lib.Route? route;
   lib.Vehicle? car;
+  lib.Trip? trip;
+  DeviceLocationBloc deviceLocationBloc = GetIt.instance<DeviceLocationBloc>();
 
   @override
   void initState() {
@@ -45,7 +50,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     route = await NavigationUtils.navigateTo(
         context: context,
         widget: RoutesForAmbassador(
-          associationId: widget.associationId,
+          associationId: widget.association.associationId!,
         ));
 
     if (route != null) {
@@ -80,24 +85,30 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                       car = await NavigationUtils.navigateTo(
                           context: context,
                           widget: CarForAmbassador(
-                            associationId: widget.associationId,
+                            associationId: widget.association.associationId!,
                           ));
 
                       if (car != null) {
+                        trip = await _getTrip(route!, car!);
                         prefs.saveCar(car!);
                         _navigateToPassengerCount(route!, car!);
                       }
                     },
                     child: const Text('No')),
                 TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _navigateToPassengerCount(route!, car!);
+                    onPressed: () async {
+                      trip = await _getTrip(route!, car!);
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                        _navigateToPassengerCount(route!, car!);
+                      }
                     },
                     child: const Text('Yes')),
               ]);
         });
   }
+
+  DataApiDog dataApi = GetIt.instance<DataApiDog>();
 
   _navigateToCarSearch(lib.Route route) async {
     if (car != null) {
@@ -107,19 +118,52 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     car = await NavigationUtils.navigateTo(
         context: context,
         widget: CarForAmbassador(
-          associationId: widget.associationId,
+          associationId: widget.association.associationId!,
         ));
 
     if (car != null) {
+      trip = await _getTrip(route, car!);
       prefs.saveCar(car!);
       _navigateToPassengerCount(route, car!);
     }
   }
 
   _navigateToPassengerCount(lib.Route route, lib.Vehicle vehicle) async {
-    NavigationUtils.navigateTo(
-        context: context,
-        widget: VehiclePassengerCount(vehicle: vehicle, route: route));
+    trip ??= await _getTrip(route, vehicle);
+    if (mounted) {
+      NavigationUtils.navigateTo(
+          context: context,
+          widget: VehiclePassengerCount(
+            vehicle: vehicle,
+            route: route,
+            trip: trip!,
+          ));
+    }
+  }
+
+  Future<lib.Trip?> _getTrip(lib.Route route, lib.Vehicle vehicle) async {
+    var loc = await deviceLocationBloc.getLocation();
+    var user = prefs.getUser();
+    lib.Trip? trip;
+    if (user != null) {
+      trip = lib.Trip(
+          tripId: Uuid().v4().toString(),
+          userId: user.userId!,
+          userName: '${user.firstName} ${user.lastName}',
+          dateStarted: DateTime.now().toUtc().toIso8601String(),
+          dateEnded: null,
+          routeId: route.routeId!,
+          routeName: route.name!,
+          vehicleId: car!.vehicleId,
+          vehicleReg: car!.vehicleReg,
+          associationId: widget.association.associationId!,
+          associationName: widget.association.associationName,
+          position: lib.Position(
+              coordinates: [loc.longitude, loc.latitude], type: 'Point'),
+          created: DateTime.now().toUtc().toIso8601String());
+      dataApi.addTrip(trip!);
+    }
+    return trip;
   }
 
   @override
@@ -169,7 +213,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                             child: Padding(
                                 padding: EdgeInsets.all(20),
                                 child: Text(
-                                  'Select Taxi Route',
+                                  'Start Trip',
                                   style: myTextStyle(
                                       fontSize: 24,
                                       color: Colors.white,
@@ -200,7 +244,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                             onPressed: () {
                               _navigateToCarSearch(route!);
                             },
-                            child: Text('Use Previous Route',
+                            child: Text('Use Previous Trip Route',
                                 style: myTextStyle(fontSize: 20)),
                           ),
                         ],
