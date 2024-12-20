@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kasie_transie_library/bloc/data_api_dog.dart';
 import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
@@ -10,6 +11,7 @@ import 'package:kasie_transie_library/widgets/ambassador/cars_for_ambassador.dar
 import 'package:kasie_transie_library/widgets/ambassador/routes_for_ambassador.dart';
 import 'package:kasie_transie_library/widgets/vehicle_passenger_count.dart';
 import 'package:uuid/uuid.dart';
+import 'package:kasie_transie_library/widgets/ambassador/association_vehicle_photo_handler.dart';
 
 class AmbassadorStarter extends StatefulWidget {
   const AmbassadorStarter({super.key, required this.association});
@@ -49,8 +51,9 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
   _navigateToRoutes() async {
     route = await NavigationUtils.navigateTo(
         context: context,
-        widget: RoutesForAmbassador(
+        widget: NearestRoutesList(
           associationId: widget.association.associationId!,
+          title: 'Ambassador Routes',
         ));
 
     if (route != null) {
@@ -166,13 +169,24 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     return trip;
   }
 
+  _navigateToAssociationPhotos() {
+    NavigationUtils.navigateTo(
+        context: context, widget: AssociationVehiclePhotoHandler());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ambassador Starter', style: myTextStyle()),
-        leading: gapW32,
-      ),
+          title: Text('Ambassador Starter', style: myTextStyle()),
+          leading: gapW32,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  _navigateToAssociationPhotos();
+                },
+                icon: FaIcon(FontAwesomeIcons.camera)),
+          ]),
       body: SafeArea(
         child: Stack(children: [
           Padding(
