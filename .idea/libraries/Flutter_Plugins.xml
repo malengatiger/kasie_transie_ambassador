@@ -89,10 +89,11 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_storage-12.3.7" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/image_picker_android-0.8.12+18" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/audioplayers-6.1.0" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/camera_android_camerax-0.6.10" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.5.3" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/fluttertoast-8.2.8" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_android-2.3.4" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences-2.3.4" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/camera_android_camerax-0.6.10+3" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_core-3.9.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_core_web-2.19.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/image_picker_android-0.8.12+19" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
