@@ -11,6 +11,8 @@ import 'package:kasie_transie_library/widgets/ambassador/cars_for_ambassador.dar
 import 'package:kasie_transie_library/widgets/ambassador/routes_for_ambassador.dart';
 import 'package:kasie_transie_library/widgets/vehicle_passenger_count.dart';
 import 'package:uuid/uuid.dart';
+import 'package:kasie_transie_library/widgets/payment/cash_check_in_widget.dart';
+
 import 'package:kasie_transie_library/widgets/ambassador/association_vehicle_photo_handler.dart';
 
 class AmbassadorStarter extends StatefulWidget {
@@ -214,25 +216,61 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                   ),
                 ),
                 Expanded(
-                    child: Center(
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              elevation: WidgetStatePropertyAll(8),
-                              backgroundColor:
-                                  WidgetStatePropertyAll(Colors.grey),
-                            ),
-                            onPressed: () {
-                              _navigateToRoutes();
-                            },
-                            child: Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Text(
-                                  'Start Trip',
-                                  style: myTextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                      weight: FontWeight.normal),
-                                )))))
+                  child: Center(
+                      child: SizedBox(
+                          height: 200,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 300,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    elevation: WidgetStatePropertyAll(8),
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(Colors.grey),
+                                  ),
+                                  onPressed: () {
+                                    _navigateToRoutes();
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(12),
+                                    child: Text(
+                                      'Start Trip',
+                                      style: myTextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          weight: FontWeight.normal),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              gapH32,
+                              SizedBox(
+                                width: 300,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    elevation: WidgetStatePropertyAll(8),
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(Colors.green),
+                                  ),
+                                  onPressed: () {
+                                    _navigateToCashCheckIn();
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(12),
+                                    child: Text(
+                                      'Cash Check In',
+                                      style: myTextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          weight: FontWeight.normal),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ))),
+                )
               ],
             ),
           ),
@@ -266,5 +304,15 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
         ]),
       ),
     );
+  }
+
+  _navigateToCashCheckIn() async {
+    NavigationUtils.navigateTo(
+        context: context,
+        widget: CashCheckInWidget(
+          onError: (err) {},
+          isCommuterCash: true,
+          isRankFeeCash: false,
+        ));
   }
 }
