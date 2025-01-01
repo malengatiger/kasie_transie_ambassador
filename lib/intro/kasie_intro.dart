@@ -57,7 +57,6 @@ class KasieIntroState extends State<KasieIntro>
     pp('\n\n$mm _getAuthenticationStatus ....... '
         'check both Firebase user and Kasie user');
     user = prefs.getUser();
-
     var firebaseUser = appAuth.getUser();
 
     if (user != null && firebaseUser != null) {
@@ -101,20 +100,20 @@ class KasieIntroState extends State<KasieIntro>
     pp('$mm ... onSignInWithPhone ....');
     _clearUser();
     NavigationUtils.navigateTo(
-        context: context,
-        widget: PhoneAuthSignin(
-          onGoodSignIn: () {
-            pp('$mm ................................'
-                '... onGoodSignIn .... ');
-            onSuccessfulSignIn();
-          },
-          onSignInError: () {
-            pp('$mm ................................'
-                '... onSignInError ${E.redDot} .... ');
-            onFailedSignIn();
-          },
-        ),
-        );
+      context: context,
+      widget: PhoneAuthSignin(
+        onGoodSignIn: () {
+          pp('$mm ................................'
+              '... onGoodSignIn .... ');
+          onSuccessfulSignIn();
+        },
+        onSignInError: () {
+          pp('$mm ................................'
+              '... onSignInError ${E.redDot} .... ');
+          onFailedSignIn();
+        },
+      ),
+    );
   }
 
   onRegister() {
@@ -147,14 +146,15 @@ class KasieIntroState extends State<KasieIntro>
   _navigateToStarter() async {
     await Future.delayed(const Duration(milliseconds: 500));
     if (mounted) {
-
       if (user!.userType! == Constants.AMBASSADOR) {
         pp('$mm navigate to AmbassadorDashboard ...');
         var ass = prefs.getAssociation();
         NavigationUtils.navigateTo(
-            context: context,
-            widget: AmbassadorStarter(association: ass!,),
-            );
+          context: context,
+          widget: AmbassadorStarter(
+            association: ass!,
+          ),
+        );
       }
     }
   }
@@ -181,19 +181,6 @@ class KasieIntroState extends State<KasieIntro>
           'KasieTransie',
           style: myTextStyleLargeWithColor(context, color),
         ),
-        bottom: PreferredSize(
-            preferredSize: Size.fromHeight(authed ? 80 : 124),
-            child: Column(
-              children: [
-                Header(
-                    onSignInWithEmail: onSignInWithEmail,
-                    onSignInWithPhone: onSignInWithPhone,
-                    onRegister: onRegister),
-                const SizedBox(
-                  height: 12,
-                ),
-              ],
-            )),
       ),
       body: Stack(
         children: [
@@ -227,9 +214,9 @@ class KasieIntroState extends State<KasieIntro>
             ],
           ),
           Positioned(
-            bottom: 2,
+            bottom: 100,
             left: 48,
-            right: 40,
+            right: 48,
             child: SizedBox(
               width: 200,
               height: 48,
@@ -259,6 +246,19 @@ class KasieIntroState extends State<KasieIntro>
               ),
             ),
           ),
+          Positioned(
+              bottom: 8,
+              left: 64,
+              right: 64,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  elevation: WidgetStatePropertyAll(8),
+                  backgroundColor: WidgetStatePropertyAll(Colors.pink),
+                ),
+                  onPressed: () {
+                    onSignInWithEmail();
+                  },
+                  child: Text('Sign In', style: myTextStyle(color: Colors.white))))
         ],
       ),
     ));

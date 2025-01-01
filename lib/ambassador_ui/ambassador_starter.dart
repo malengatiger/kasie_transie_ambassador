@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
@@ -7,13 +8,12 @@ import 'package:kasie_transie_library/utils/device_location_bloc.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/navigator_utils.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
+import 'package:kasie_transie_library/widgets/ambassador/association_vehicle_photo_handler.dart';
 import 'package:kasie_transie_library/widgets/ambassador/cars_for_ambassador.dart';
 import 'package:kasie_transie_library/widgets/ambassador/routes_for_ambassador.dart';
+import 'package:kasie_transie_library/widgets/payment/cash_check_in_widget.dart';
 import 'package:kasie_transie_library/widgets/vehicle_passenger_count.dart';
 import 'package:uuid/uuid.dart';
-import 'package:kasie_transie_library/widgets/payment/cash_check_in_widget.dart';
-
-import 'package:kasie_transie_library/widgets/ambassador/association_vehicle_photo_handler.dart';
 
 class AmbassadorStarter extends StatefulWidget {
   const AmbassadorStarter({super.key, required this.association});
@@ -34,6 +34,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
   lib.Vehicle? car;
   lib.Trip? trip;
   DeviceLocationBloc deviceLocationBloc = GetIt.instance<DeviceLocationBloc>();
+  static const mm = '💙💙💙💙AmbassadorStarter 💙';
 
   @override
   void initState() {
@@ -42,12 +43,26 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     user = prefs.getUser();
     route = prefs.getRoute();
     car = prefs.getCar();
+    _signIn();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  _signIn() async {
+    if (user != null) {
+      var u = await auth.FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: user!.email!, password: user!.password!);
+      if (u.user != null) {
+        pp('$mm user has signed in');
+        if (mounted) {
+          showOKToast(message: 'User signed in', context: context);
+        }
+      }
+    }
   }
 
   _navigateToRoutes() async {

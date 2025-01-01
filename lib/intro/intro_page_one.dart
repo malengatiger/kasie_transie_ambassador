@@ -2,7 +2,6 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 
-
 class IntroPage extends StatefulWidget {
   const IntroPage(
       {super.key,
@@ -62,7 +61,7 @@ class IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
     }
     var brightness = MediaQuery.of(context).platformBrightness;
     bool isDarkMode = brightness == Brightness.dark;
-    var  color = getTextColorForBackground(Theme.of(context).primaryColor);
+    var color = getTextColorForBackground(Theme.of(context).primaryColor);
 
     if (isDarkMode) {
       color = Theme.of(context).primaryColor;
@@ -111,7 +110,10 @@ class IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                                 const EdgeInsets.symmetric(horizontal: 24.0),
                             child: Text(
                               widget.title,
-                              style: myTextStyleLargeWithColor(context, color),
+                              style: myTextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  weight: FontWeight.w900),
                             ),
                           ),
                         ),
@@ -135,13 +137,15 @@ class IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
                                     decoration: const BoxDecoration(
                                         // color: Colors.white.withOpacity(0.6),
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(16.0),
-                                        )),
+                                      Radius.circular(16.0),
+                                    )),
                                     child: Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Text(
                                         widget.text,
-                                        style: myTextStyleMedium(context),
+                                        style: myTextStyle(
+                                            color: Colors.white,
+                                            weight: FontWeight.normal),
                                       ),
                                     ),
                                   ),

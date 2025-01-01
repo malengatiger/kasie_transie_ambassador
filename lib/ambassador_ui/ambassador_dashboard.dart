@@ -53,6 +53,7 @@ class AmbassadorDashboardState extends State<AmbassadorDashboard>
   late StreamSubscription<lib.RouteUpdateRequest> _routeUpdateSubscription;
   ListApiDog listApiDog = GetIt.instance<ListApiDog>();
   Prefs prefs = GetIt.instance<Prefs>();
+  FCMService fcmService = GetIt.instance<FCMService>();
 
   String? dispatchWithScan,
       manualDispatch,
@@ -96,15 +97,15 @@ class AmbassadorDashboardState extends State<AmbassadorDashboard>
     });
     //
     _mediaRequestSubscription =
-        fcmBloc.vehicleMediaRequestStream.listen((event) {
-          pp('$mm fcmBloc.vehicleMediaRequestStream delivered ${event.vehicleReg}');
+        fcmService.vehicleMediaRequestStream.listen((event) {
+          pp('$mm fcmService.vehicleMediaRequestStream delivered ${event.vehicleReg}');
           if (mounted) {
             _confirmNavigationToPhotos(event);
           }
         });
     //
-    _routeUpdateSubscription = fcmBloc.routeUpdateRequestStream.listen((event) {
-      pp('$mm fcmBloc.routeUpdateRequestStream delivered: ${event.routeName}');
+    _routeUpdateSubscription = fcmService.routeUpdateRequestStream.listen((event) {
+      pp('$mm fcmService.routeUpdateRequestStream delivered: ${event.routeName}');
       _noteRouteUpdate(event);
     });
   }
