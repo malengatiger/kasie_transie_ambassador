@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kasie_transie_ambassador/ambassador_ui/dash_elements.dart';
 import 'package:kasie_transie_library/bloc/data_api_dog.dart';
 import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
 import 'package:kasie_transie_library/utils/device_location_bloc.dart';
@@ -217,7 +218,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                     ? gapW32
                     : Text('${user!.firstName} ${user!.lastName}',
                         style: myTextStyle(
-                            color: Colors.grey,
+                            color: Colors.grey.shade400,
                             fontSize: 28,
                             weight: FontWeight.w700)),
                 gapH32,
@@ -225,10 +226,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                 gapH32,
                 Padding(
                   padding: EdgeInsets.all(16),
-                  child: Text(
-                    'To start your Ambassador job you have to choose the route and the taxi you will be working in.',
-                    style: myTextStyle(fontSize: 18),
-                  ),
+                  child: DashElements(isGrid: false),
                 ),
                 Expanded(
                   child: Center(
