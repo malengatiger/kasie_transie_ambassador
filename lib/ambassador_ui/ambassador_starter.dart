@@ -60,7 +60,9 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
       if (u.user != null) {
         pp('$mm user has signed in');
         if (mounted) {
-          showOKToast(message: 'User signed in', context: context);
+          showOKToast(
+              duration: const Duration(seconds: 2),
+              message: 'User signed in successfully!', context: context);
         }
       }
     }
@@ -221,8 +223,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                             color: Colors.grey.shade400,
                             fontSize: 28,
                             weight: FontWeight.w700)),
-                gapH32,
-                gapH32,
+
                 gapH32,
                 Padding(
                   padding: EdgeInsets.all(16),
@@ -258,29 +259,8 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                                 ),
                               ),
                               gapH32,
-                              SizedBox(
-                                width: 300,
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    elevation: WidgetStatePropertyAll(8),
-                                    backgroundColor:
-                                        WidgetStatePropertyAll(Colors.green),
-                                  ),
-                                  onPressed: () {
-                                    _navigateToCashCheckIn();
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.all(12),
-                                    child: Text(
-                                      'Cash Check In',
-                                      style: myTextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                          weight: FontWeight.normal),
-                                    ),
-                                  ),
-                                ),
-                              ),
+
+
                             ],
                           ))),
                 )
@@ -319,13 +299,5 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     );
   }
 
-  _navigateToCashCheckIn() async {
-    NavigationUtils.navigateTo(
-        context: context,
-        widget: CashCheckInWidget(
-          onError: (err) {},
-          isCommuterCash: true,
-          isRankFeeCash: false,
-        ));
-  }
+
 }
