@@ -137,7 +137,7 @@ class DashElementsState extends State<DashElements>
     for (var cp in cashPayments) {
       total += cp.amount!;
     }
-    NavigationUtils.navigateTo(
+   var ok = await  NavigationUtils.navigateTo(
         context: context,
         widget: CashCheckInWidget(
           onError: (err) {},
@@ -146,6 +146,14 @@ class DashElementsState extends State<DashElements>
           amount: total,
           passengers: passengersIn,
         ));
+    if (ok) {
+      cashPayments.clear();
+      passengerCounts.clear();
+      trips.clear();
+      setState(() {
+
+      });
+    }
   }
 }
 

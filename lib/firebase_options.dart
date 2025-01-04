@@ -50,11 +50,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB3finIgPi481q3-GaEDjOLcoPbs664gTs',
-    appId: '1:854189510560:android:310457d2660e50a636dec5',
-    messagingSenderId: '854189510560',
-    projectId: 'kasie-transie-3',
-    storageBucket: 'kasie-transie-3.appspot.com',
+    apiKey: 'AIzaSyD5AGxqLVyDNjRoRRDYVcnBq6_HMPAu3MU',
+    appId: '1:657690570978:android:38f1268e0b037239646ebb',
+    messagingSenderId: '657690570978',
+    projectId: 'kasie-transie-4',
+    storageBucket: 'kasie-transie-4.firebasestorage.app',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
