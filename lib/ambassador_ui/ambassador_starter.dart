@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:kasie_transie_ambassador/ambassador_ui/dash_elements.dart';
 import 'package:kasie_transie_library/bloc/data_api_dog.dart';
 import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
+import 'package:kasie_transie_library/messaging/fcm_bloc.dart';
 import 'package:kasie_transie_library/utils/device_location_bloc.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/navigator_utils.dart';
@@ -12,10 +15,9 @@ import 'package:kasie_transie_library/utils/prefs.dart';
 import 'package:kasie_transie_library/widgets/ambassador/association_vehicle_photo_handler.dart';
 import 'package:kasie_transie_library/widgets/ambassador/cars_for_ambassador.dart';
 import 'package:kasie_transie_library/widgets/ambassador/routes_for_ambassador.dart';
-import 'package:kasie_transie_library/widgets/payment/cash_check_in_widget.dart';
 import 'package:kasie_transie_library/widgets/vehicle_passenger_count.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:badges/badges.dart' as bd;
 class AmbassadorStarter extends StatefulWidget {
   const AmbassadorStarter({super.key, required this.association});
 
@@ -35,16 +37,63 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
   lib.Vehicle? car;
   lib.Trip? trip;
   DeviceLocationBloc deviceLocationBloc = GetIt.instance<DeviceLocationBloc>();
+  FCMService fcmService = GetIt.instance<FCMService>();
+
+  late StreamSubscription<lib.CommuterRequest> commuterRequestSub;
   static const mm = '💙💙💙💙AmbassadorStarter 💙';
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+    _listen();
     user = prefs.getUser();
     route = prefs.getRoute();
     car = prefs.getCar();
     _signIn();
+  }
+
+  List<lib.CommuterRequest> commuterRequests = [];
+
+  Future<void> _listen() async {
+    await fcmService.initialize();
+    commuterRequestSub = fcmService.commuterRequestStream.listen((req) {
+      commuterRequests.add(req);
+      _filterCommuterRequests(commuterRequests);
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  List<lib.CommuterRequest> _filterCommuterRequests(
+      List<lib.CommuterRequest> requests) {
+    pp('$mm _filterCommuterRequests arrived: ${requests.length}');
+
+    List<lib.CommuterRequest> filtered = [];
+    DateTime now = DateTime.now().toUtc();
+    for (var r in requests) {
+      var date = DateTime.parse(r.dateRequested!);
+      var difference = now.difference(date);
+      pp('$mm _filterCommuterRequests difference: $difference');
+
+      if (difference <= const Duration(hours: 1)) {
+        filtered.add(r);
+      }
+    }
+    pp('$mm _filterCommuterRequests filtered: ${filtered.length}');
+    setState(() {
+      commuterRequests = filtered;
+    });
+    return filtered;
+  }
+
+ int  _getPassengers() {
+    var cnt = 0;
+    for (var cr in commuterRequests) {
+      cnt += cr.numberOfPassengers!;
+    }
+    return cnt;
   }
 
   @override
@@ -62,7 +111,8 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
         if (mounted) {
           showOKToast(
               duration: const Duration(seconds: 2),
-              message: 'User signed in successfully!', context: context);
+              message: 'User signed in successfully!',
+              context: context);
         }
       }
     }
@@ -184,7 +234,8 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
           position: lib.Position(
               coordinates: [loc.longitude, loc.latitude], type: 'Point'),
           created: DateTime.now().toUtc().toIso8601String());
-      dataApi.addTrip(trip!);
+      dataApi.addTrip(trip);
+      fcmService.subscribeForAmbassador(route, 'Ambassador');
     }
     return trip;
   }
@@ -223,7 +274,6 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                             color: Colors.grey.shade400,
                             fontSize: 28,
                             weight: FontWeight.w700)),
-
                 gapH32,
                 Padding(
                   padding: EdgeInsets.all(16),
@@ -259,11 +309,22 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                                 ),
                               ),
                               gapH32,
-
-
                             ],
                           ))),
-                )
+                ),
+                commuterRequests.isNotEmpty? Row(
+                  children: [
+                    Text('Commuter Requests'),
+                    bd.Badge(
+                      badgeContent: Text('(${_getPassengers()})', style: myTextStyle(color: Colors.white),),
+                      badgeStyle:  bd.BadgeStyle(
+                        elevation: 8, padding: EdgeInsets.all(16),
+                        badgeColor:  Colors.red,
+                      ),
+
+                    ),
+                  ],
+                ): gapW32,
               ],
             ),
           ),
@@ -298,6 +359,4 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
       ),
     );
   }
-
-
 }
