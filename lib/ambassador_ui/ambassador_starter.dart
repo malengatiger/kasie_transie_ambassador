@@ -6,7 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kasie_transie_ambassador/ambassador_ui/dash_elements.dart';
 import 'package:kasie_transie_library/bloc/data_api_dog.dart';
+import 'package:kasie_transie_library/bloc/list_api_dog.dart';
 import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
+import 'package:kasie_transie_library/maps/map_viewer.dart';
 import 'package:kasie_transie_library/messaging/fcm_bloc.dart';
 import 'package:kasie_transie_library/utils/device_location_bloc.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
@@ -18,6 +20,7 @@ import 'package:kasie_transie_library/widgets/ambassador/routes_for_ambassador.d
 import 'package:kasie_transie_library/widgets/vehicle_passenger_count.dart';
 import 'package:uuid/uuid.dart';
 import 'package:badges/badges.dart' as bd;
+
 class AmbassadorStarter extends StatefulWidget {
   const AmbassadorStarter({super.key, required this.association});
 
@@ -40,7 +43,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
   FCMService fcmService = GetIt.instance<FCMService>();
 
   late StreamSubscription<lib.CommuterRequest> commuterRequestSub;
-  static const mm = '💙💙💙💙AmbassadorStarter 💙';
+  static const mm = '🥦️🥦️🥦️🥦️AmbassadorStarter 🥦️🥦️';
 
   @override
   void initState() {
@@ -66,6 +69,27 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     });
   }
 
+  ListApiDog listApiDog = GetIt.instance<ListApiDog>();
+  late Timer timer;
+  _initializeTimer() async {
+    pp('\n\n$mm initialize Timer for ambassador commuters');
+    timer = Timer.periodic(Duration(seconds: 60), (timer) {
+      pp('\n\n$mm Timer tick #${timer.tick} - _filterCommuterRequests ...');
+      _filterCommuterRequests(commuterRequests);
+    });
+    pp('\n\n$mm  Ambassador Timer initialized for 🌀 60 seconds per tick🌀');
+  }
+
+  void _getCommuterRequests() async {
+
+    var date = DateTime.now().toUtc().subtract(const Duration(hours: 1));
+    commuterRequests = await listApiDog.getRouteCommuterRequests(routeId: route!.routeId!,
+        startDate: date.toIso8601String());
+    if (mounted) {
+      setState(() {
+      });
+    }
+  }
   List<lib.CommuterRequest> _filterCommuterRequests(
       List<lib.CommuterRequest> requests) {
     pp('$mm _filterCommuterRequests arrived: ${requests.length}');
@@ -88,7 +112,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     return filtered;
   }
 
- int  _getPassengers() {
+  int _getPassengers() {
     var cnt = 0;
     for (var cr in commuterRequests) {
       cnt += cr.numberOfPassengers!;
@@ -99,6 +123,8 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
   @override
   void dispose() {
     _controller.dispose();
+    commuterRequestSub.cancel();
+    timer.cancel();
     super.dispose();
   }
 
@@ -108,6 +134,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
           email: user!.email!, password: user!.password!);
       if (u.user != null) {
         pp('$mm user has signed in');
+        _initializeTimer();
         if (mounted) {
           showOKToast(
               duration: const Duration(seconds: 2),
@@ -128,6 +155,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
 
     if (route != null) {
       prefs.saveRoute(route!);
+      _getCommuterRequests();
       _navigateToCarSearch(route!);
     }
   }
@@ -266,15 +294,16 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                gapH32,
+
                 user == null
                     ? gapW32
                     : Text('${user!.firstName} ${user!.lastName}',
                         style: myTextStyle(
                             color: Colors.grey.shade400,
-                            fontSize: 28,
+                            fontSize: 16,
                             weight: FontWeight.w700)),
                 gapH32,
+                gapH32, gapH32,
                 Padding(
                   padding: EdgeInsets.all(16),
                   child: DashElements(isGrid: false),
@@ -312,22 +341,32 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                             ],
                           ))),
                 ),
-                commuterRequests.isNotEmpty? Row(
-                  children: [
-                    Text('Commuter Requests'),
-                    bd.Badge(
-                      badgeContent: Text('(${_getPassengers()})', style: myTextStyle(color: Colors.white),),
-                      badgeStyle:  bd.BadgeStyle(
-                        elevation: 8, padding: EdgeInsets.all(16),
-                        badgeColor:  Colors.red,
-                      ),
 
-                    ),
-                  ],
-                ): gapW32,
               ],
             ),
           ),
+          commuterRequests.isNotEmpty? Positioned(
+              top: 64, right: 16, left: 16,
+              child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Commuters on the route', style: myTextStyle(weight: FontWeight.w900, fontSize: 12, color: Colors.grey)),
+                  gapW16,
+                  bd.Badge(
+                    badgeContent: Text('${_getPassengers()}', style: myTextStyle(color: Colors.white)),
+                    badgeStyle: bd.BadgeStyle(padding: EdgeInsets.all(12), badgeColor:  Colors.red.shade700),
+                    onTap: () {
+                      _navigateToRouteMap();
+                    },
+                  ),
+                  gapW8,
+                  Text('Requests', style: myTextStyle(weight: FontWeight.w900, fontSize: 12, color: Colors.grey)),
+                  gapW8,
+                  bd.Badge(
+                    badgeContent: Text('${commuterRequests.length}', style: myTextStyle(color: Colors.white)),
+                    badgeStyle: bd.BadgeStyle(padding: EdgeInsets.all(12), badgeColor:  Colors.grey.shade500),
+                  ),
+                ],
+              )): gapW32,
           route == null
               ? gapW32
               : Positioned(
@@ -341,22 +380,24 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
                             onPressed: () {
                               route = prefs.getRoute();
                               setState(() {});
-                            },
-                            child: Text('${route!.name}',
-                                style: myTextStyle(color: Colors.grey)),
-                          ),
-                          gapH8,
-                          TextButton(
-                            onPressed: () {
                               _navigateToCarSearch(route!);
                             },
-                            child: Text('Use Previous Trip Route',
-                                style: myTextStyle(fontSize: 20)),
+                            child: Text('${route!.name}',
+                                style: myTextStyle(color: Colors.grey, fontSize: 18, weight: FontWeight.w900)),
                           ),
                         ],
                       ))),
         ]),
       ),
     );
+  }
+  void _navigateToRouteMap() {
+    pp('$mm ..... _navigateToRouteMap');
+    if (route != null) {
+    NavigationUtils.navigateTo(
+        context: context, widget: MapViewer(
+        commuterRequests: commuterRequests,
+        route: route!));
+    }
   }
 }
