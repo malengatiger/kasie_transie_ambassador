@@ -178,7 +178,7 @@ class KasieIntroState extends State<KasieIntro>
         child: Scaffold(
       appBar: AppBar(
         title: Text(
-          'KasieTransie',
+          'Ambassador App',
           style: myTextStyleLargeWithColor(context, color),
         ),
       ),
