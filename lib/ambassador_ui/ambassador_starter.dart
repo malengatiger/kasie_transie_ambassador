@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kasie_transie_ambassador/ambassador_ui/dash_elements.dart';
+import 'package:kasie_transie_ambassador/ambassador_ui/passenger_counter_page.dart';
 import 'package:kasie_transie_library/bloc/data_api_dog.dart';
 import 'package:kasie_transie_library/bloc/list_api_dog.dart';
 import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
@@ -71,7 +72,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
 
   ListApiDog listApiDog = GetIt.instance<ListApiDog>();
   late Timer timer;
-  _initializeTimer() async {
+  initializeTimer() async {
     pp('\n\n$mm initialize Timer for ambassador commuters');
     timer = Timer.periodic(Duration(seconds: 60), (timer) {
       pp('\n\n$mm Timer tick #${timer.tick} - _filterCommuterRequests ...');
@@ -134,7 +135,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
           email: user!.email!, password: user!.password!);
       if (u.user != null) {
         pp('$mm user has signed in');
-        _initializeTimer();
+        // initializeTimer();
         if (mounted) {
           showOKToast(
               duration: const Duration(seconds: 2),
@@ -222,6 +223,8 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
           associationId: widget.association.associationId!,
         ));
 
+    pp('$mm  _navigateToCarSearch(): ....... vehicle scanned: ${car!.toJson()}');
+
     if (car != null) {
       trip = await _getTrip(route, car!);
       prefs.saveCar(car!);
@@ -234,7 +237,7 @@ class AmbassadorStarterState extends State<AmbassadorStarter>
     if (mounted) {
       NavigationUtils.navigateTo(
           context: context,
-          widget: VehiclePassengerCount(
+          widget: PassengerCounterPage(
             vehicle: vehicle,
             route: route,
             trip: trip!,

@@ -5,12 +5,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart' as store;
 import 'package:flutter/material.dart';
+import 'package:kasie_transie_ambassador/qr_code_scanner.dart';
 import 'package:kasie_transie_library/bloc/register_services.dart';
 import 'package:kasie_transie_library/bloc/theme_bloc.dart';
 import 'package:kasie_transie_library/data/data_schemas.dart' as lib;
 import 'package:kasie_transie_library/messaging/fcm_bloc.dart';
 import 'package:kasie_transie_library/utils/functions.dart';
 import 'package:kasie_transie_library/utils/prefs.dart';
+import 'package:kasie_transie_library/widgets/scanners/kasie/last_scanner_widget.dart';
+import 'package:kasie_transie_library/widgets/vehicle_widgets/cars_for_dispatch.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:get_it/get_it.dart';
 import 'firebase_options.dart';
@@ -74,7 +77,7 @@ class KasieTransieAmbassador extends StatelessWidget {
 
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Marshal',
+            title: 'Ambassador',
             theme: kasieThemeManager.getTheme(themeIndex).lightTheme,
             // darkTheme: kasieThemeManager.getTheme(themeIndex).darkTheme,
 

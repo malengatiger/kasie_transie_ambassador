@@ -41,7 +41,7 @@ class _SplashWidgetState extends State<SplashWidget> {
               ),
               Center(
                 child: Image.asset(
-                  'assets/gio.png',
+                  'assets/ktlogo_red.png',
                   height: 64,
                   width: 64,
                 ),

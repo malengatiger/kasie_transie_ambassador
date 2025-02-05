@@ -23,6 +23,9 @@ dependencies:
   focused_menu: ^1.0.5
   firebase_crashlytics: ^4.2.0
   flutter_local_notifications: ^18.0.1
+  mobile_scanner: ^6.0.5
+  pretty_qr_code: ^3.3.0
+#  flutter_barcode_scanner: ^2.0.0
 
 
 dev_dependencies:

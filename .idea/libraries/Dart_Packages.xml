@@ -1254,6 +1254,7 @@
         <entry key="js">
           <value>
             <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/js-0.6.7/lib" />
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/js-0.7.1/lib" />
             </list>
           </value>
@@ -1360,7 +1361,7 @@
         <entry key="mobile_scanner">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/mobile_scanner-6.0.2/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/mobile_scanner-6.0.5/lib" />
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/mobile_scanner-6.0.3/lib" />
             </list>
           </value>
@@ -1637,6 +1638,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/pretty_print_json-1.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="pretty_qr_code">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/pretty_qr_code-3.3.0/lib" />
             </list>
           </value>
         </entry>
@@ -2407,6 +2415,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/intl_phone_field-3.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/io-1.0.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/iso-1.0.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/js-0.6.7/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/js-0.7.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/json_annotation-4.9.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/json_serializable-6.9.3/lib" />
@@ -2423,8 +2432,8 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/material_color_utilities-0.11.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/meta-1.15.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/mime-2.0.0/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/mobile_scanner-6.0.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/mobile_scanner-6.0.3/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/mobile_scanner-6.0.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/mockito-5.4.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/mongo_dart-0.10.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/mongo_dart_query-5.0.2/lib" />
@@ -2466,6 +2475,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/power_extensions-0.2.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/pretty_json-2.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/pretty_print_json-1.0.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/pretty_qr_code-3.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/protobuf-3.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/provider-6.1.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/proximity_hash-2.1.0/lib" />
