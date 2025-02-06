@@ -266,6 +266,9 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
   }
 
   void _navigateToCashPayment() async {
+    if (passengersIn == 0) {
+      return;
+    }
     NavigationUtils.navigateTo(
         context: context,
         widget: CommuterCashPaymentWidget(
@@ -273,7 +276,7 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
           route: widget.route,
           onError: (err) {},
           trip: widget.trip,
-          numberOfPassengers: passengerCount.passengersIn!,
+          numberOfPassengers: passengersIn,
         ));
   }
 
@@ -313,20 +316,21 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                 pp('$mm onVehicleScanned scan: $data');
               },
               onCommuterScanned: (commuter) {
-                pp('$mm onCommuterScanned scan: ${commuter.toJson()}');
+                pp('$mm ........ onCommuterScanned scan: ${commuter.toJson()}');
                 scannedCommuter = commuter;
                 _onPassengersIn(1);
+                _navigateToCashPayment();
               },
               onCommuterTicketScanned: (commuterTicket) {
                 pp('$mm onCommuterTicketScanned scan: ${commuterTicket.toJson()}');
-
               },
               onError: (err) {
                 pp('$mm onError: $err');
-
+                if (mounted) {
+                  showErrorToast(message: err, context: context);
+                }
               },
             ));
-        pp('$mm received scan: $scanned');
       } catch (e, s) {
         pp('$e $s');
       }
