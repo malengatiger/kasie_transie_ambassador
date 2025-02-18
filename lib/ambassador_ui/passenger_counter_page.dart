@@ -23,8 +23,6 @@ import 'package:kasie_transie_library/widgets/scanners/dispatch_helper.dart';
 import 'package:kasie_transie_library/widgets/scanners/kasie/last_scanner_widget.dart';
 import 'package:kasie_transie_library/widgets/vehicle_widgets/fuel_top_up_widget.dart';
 
-import 'commuter_scanner.dart';
-
 class PassengerCounterPage extends StatefulWidget {
   const PassengerCounterPage(
       {super.key,
@@ -197,14 +195,16 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
 
   String? lastDate;
   int previousPassengersIn = 0;
+  bool showSubmit = false;
   late lib.AmbassadorPassengerCount passengerCount;
 
   void _submitCounts() async {
     pp('$mm .. _submitCounts ...');
     setState(() {
       busy = true;
+      showSubmit = false;
     });
-
+    setState(() {});
     try {
       previousPassengersIn = passengersIn;
       final loc = await locationBloc.getLocation();
@@ -232,8 +232,9 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
       );
 
       pp('$mm sending counts: ${passengerCount.toJson()}');
-      dataApiDog.addAmbassadorPassengerCount(passengerCount);
-      pp('$mm .. _submitCounts seems OK!');
+      await dataApiDog.addAmbassadorPassengerCount(passengerCount);
+
+      pp('$mm .. _submitCounts seems OK! 🥬');
       var format = DateFormat.Hms();
       lastDate = format.format(DateTime.now());
       passengersOut = 0;
@@ -251,7 +252,10 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
             context: context);
       }
       if (passengerCount.passengersIn! > 0) {
-        _navigateToCashPayment();
+        pp('$mm Handling cash for passengerCount.passengersIn: 💦💦💦 ${passengerCount.passengersIn} 💦💦💦');
+        _navigateToCashPayment(passengerCount.passengersIn!);
+      } else {
+        pp('$mm NOT handling cash for passengerCount.passengersIn: " ${passengerCount.passengersIn}');
       }
     } catch (e, s) {
       pp('$e $s');
@@ -265,10 +269,9 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
     });
   }
 
-  void _navigateToCashPayment() async {
-    if (passengersIn == 0) {
-      return;
-    }
+  void _navigateToCashPayment(int passengersIn) async {
+    pp('$mm _navigateToCashPayment ...');
+
     NavigationUtils.navigateTo(
         context: context,
         widget: CommuterCashPaymentWidget(
@@ -294,7 +297,6 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
   }
 
   int passengersIn = 0, passengersOut = 0, currentPassengers = 0;
-  bool showSubmit = false;
 
   void _navigateToRouteMap() {
     pp('$mm ... _navigateToRouteMap');
@@ -305,6 +307,7 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
   }
 
   lib.Commuter? scannedCommuter;
+
   Future<void> _navigateToCommuterScan() async {
     pp('$mm _navigateToCommuterScan ...');
     if (mounted) {
@@ -319,7 +322,11 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                 pp('$mm ........ onCommuterScanned scan: ${commuter.toJson()}');
                 scannedCommuter = commuter;
                 _onPassengersIn(1);
-                _navigateToCashPayment();
+                passengersIn++;
+                _navigateToCashPayment(1);
+                setState(() {
+                  showSubmit = false;
+                });
               },
               onCommuterTicketScanned: (commuterTicket) {
                 pp('$mm onCommuterTicketScanned scan: ${commuterTicket.toJson()}');
@@ -341,6 +348,7 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
     setState(() {
       currentPassengers = currentPassengers + number;
       passengersIn = number;
+      showSubmit = true;
     });
   }
 
@@ -355,6 +363,7 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
     setState(() {
       currentPassengers = currentPassengers - number;
       passengersOut = number;
+      showSubmit = true;
     });
   }
 
@@ -418,13 +427,6 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                             color: Colors.pink))
                   ],
                 ),
-                Text(
-                  '${widget.vehicle.make} ${widget.vehicle.model} ${widget.vehicle.year}',
-                  style: myTextStyle(
-                      fontSize: 12,
-                      weight: FontWeight.normal,
-                      color: Colors.grey),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
@@ -440,11 +442,12 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                     title: 'Passengers In',
                     count: 50,
                     fontSize: 24,
+                    elevation: 2,
                     onNumberSelected: (number) {
                       _onPassengersIn(number);
                     },
                     color: Colors.blue),
-                gapH8,
+                gapH32,
                 SizedBox(
                   width: 300,
                   child: ElevatedButton(
@@ -456,7 +459,7 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                         _navigateToCommuterScan();
                       },
                       child: Text(
-                        'Scan Commuter',
+                        'Scan Commuter In',
                         style: myTextStyle(color: Colors.white),
                       )),
                 ),
@@ -466,13 +469,14 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                     title: 'Passengers Out',
                     count: 50,
                     fontSize: 24,
+                    elevation: 2,
                     onNumberSelected: (number) {
                       _onPassengersOut(number);
                     },
                     color: Colors.red),
-                gapH16,
+                gapH32,
                 Card(
-                    elevation: 8,
+                    elevation: 16,
                     child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Row(
@@ -489,14 +493,14 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                             Text(
                               '$currentPassengers',
                               style: myTextStyle(
-                                  fontSize: 24,
+                                  fontSize: 28,
                                   color: Colors.black,
                                   weight: FontWeight.w900),
                             )
                           ],
                         ))),
                 gapH16,
-                SizedBox(
+                showSubmit? SizedBox(
                   width: 300,
                   child: ElevatedButton(
                     style: const ButtonStyle(
@@ -512,9 +516,9 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                               myTextStyle(color: Colors.white, fontSize: 16)),
                     ),
                   ),
-                ),
+                ): gapW32,
                 gapH32,
-                SizedBox(
+                currentPassengers == 0? SizedBox(
                   width: 300,
                   child: ElevatedButton(
                     style: const ButtonStyle(
@@ -531,7 +535,7 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                       ),
                     ),
                   ),
-                ),
+                ): gapW32,
               ],
             ),
           ),

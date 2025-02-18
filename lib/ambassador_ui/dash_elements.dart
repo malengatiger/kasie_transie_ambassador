@@ -89,9 +89,9 @@ class DashElementsState extends State<DashElements>
             trips.isEmpty? gapW32:DataCup(title: 'Trips', count: trips.length, color: Colors.red),
             gapH8,
             trips.isEmpty? gapW32:DataCup(
-                title: 'Commuter Payments',
+                title: 'Payments',
                 amount: total,
-                color: Colors.green.shade700),
+                color: Colors.green.shade800),
             gapH8,
             trips.isEmpty? gapW32:DataCup(
                 title: 'Passengers',
@@ -163,12 +163,13 @@ class DataCup extends StatelessWidget {
       required this.title,
       this.amount,
       this.count,
-      required this.color});
+      required this.color, this.bold});
 
   final String title;
   final double? amount;
   final int? count;
   final Color color;
+  final bool? bold;
 
   @override
   Widget build(BuildContext context) {
@@ -180,18 +181,29 @@ class DataCup extends StatelessWidget {
       var f = NumberFormat('###,###,###');
       display = f.format(count);
     }
+    TextStyle? style, styleLabel ;
+    if (bold == true) {
+      style = myTextStyle(weight: FontWeight.w900, fontSize: 24, color: color);
+    } else {
+      style = myTextStyle( fontSize: 16, color: color);
+    }
+    TextStyle? labelStyle;
+    if (bold == true) {
+      styleLabel = myTextStyle(weight: FontWeight.w900, fontSize: 24, color: Colors.grey);
+    } else {
+      styleLabel = myTextStyle( fontSize: 16, color: Colors.grey);
+    }
     return Row(
       children: [
         SizedBox(
             width: 160,
             child: Text(
               title,
-              style: myTextStyle(weight: FontWeight.w900, color: Colors.grey),
+              style:styleLabel,
             )),
         Text(
           display,
-          style:
-              myTextStyle(weight: FontWeight.w900, fontSize: 24, color: color),
+          style: style,
         ),
       ],
     );
