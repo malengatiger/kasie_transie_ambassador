@@ -35,4 +35,13 @@ During the process the Ambassador will generate these data models:
 
 ![counter](https://github.com/user-attachments/assets/28b5ac16-27a8-4ac9-8260-04566d864890)
 
+### Saving the Commuter Cash Payment
+During the process the Ambassador will generate these data models:
+
+- **CommuterCashPayment** 
+
+<img width="746" alt="Screenshot 2025-02-19 at 03 05 13" src="https://github.com/user-attachments/assets/f4d99e65-2fe3-4ba7-be97-63e3d6ebbc95" />
+<img width="702" alt="Screenshot 2025-02-19 at 03 03 20" src="https://github.com/user-attachments/assets/45fc3400-c1fb-44f6-a0e3-3b5502313d85" />
+
+
 
