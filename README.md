@@ -44,4 +44,4 @@ During the process the Ambassador will generate these data models:
 <img width="702" alt="Screenshot 2025-02-19 at 03 03 20" src="https://github.com/user-attachments/assets/45fc3400-c1fb-44f6-a0e3-3b5502313d85" />
 
 
-
+Thanks! 😂
