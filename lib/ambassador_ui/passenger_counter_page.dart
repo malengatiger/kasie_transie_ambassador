@@ -21,7 +21,7 @@ import 'package:kasie_transie_library/widgets/payment/commuter_cash_payment_widg
 import 'package:kasie_transie_library/widgets/photo_handler.dart';
 import 'package:kasie_transie_library/widgets/scanners/dispatch_helper.dart';
 import 'package:kasie_transie_library/widgets/scanners/kasie/last_scanner_widget.dart';
-import 'package:kasie_transie_library/widgets/vehicle_widgets/fuel_top_up_widget.dart';
+import 'package:kasie_transie_library/widgets/vehicle_widgets/fuel_wizard.dart';
 
 class PassengerCounterPage extends StatefulWidget {
   const PassengerCounterPage(
@@ -418,9 +418,9 @@ class PassengerCounterPageState extends State<PassengerCounterPage>
                         onPressed: () {
                           NavigationUtils.navigateTo(
                               context: context,
-                              widget: FuelTopUpWidget(
+                              widget: FuelWizard(
                                 vehicle: widget.vehicle,
-                                isLandscape: false,
+
                               ));
                         },
                         icon: FaIcon(FontAwesomeIcons.gasPump,

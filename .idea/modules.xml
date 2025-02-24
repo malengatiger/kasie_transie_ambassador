@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/kasie_transie_ambassador.iml" filepath="$PROJECT_DIR$/kasie_transie_ambassador.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/kasie_transie_ambassador_android.iml" filepath="$PROJECT_DIR$/android/kasie_transie_ambassador_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/../new_library/kasie_transie_library/kasie_transie_library.iml" filepath="$PROJECT_DIR$/../new_library/kasie_transie_library/kasie_transie_library.iml" />
     </modules>
   </component>
